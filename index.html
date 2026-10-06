@@ -1,0 +1,1943 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#1d428a">
+<meta name="description" content="用工资帽组建你的首发五人，挑一支真实球队打一场 —— 看看哪套阵容更可能赢，以及为什么。">
+<meta property="og:title" content="首发五人对决">
+<meta property="og:description" content="用工资帽组建你的首发五人，挑一支真实球队打一场 —— 看看哪套阵容更可能赢，以及为什么。">
+<meta property="og:type" content="website">
+<title>首发五人对决 · NBA 2026-27</title>
+<style>
+:root{
+  --bg:#f1f4f9; --panel:#ffffff; --panel2:#f7f9fc; --line:#e4e9f1; --line2:#eef1f6;
+  --text:#141821; --muted:#6b7280; --dim:#9aa3b0;
+  --blue:#1d428a; --blue-l:#e9eef9; --red:#c8102e; --red-l:#fdecef;
+  --gold:#b8860b; --gold-l:#fdf6e3; --green:#1f7a4d; --green-l:#e7f5ee;
+  --gray:#6b7280; --gray-l:#eef0f3;
+  --shadow:0 1px 2px rgba(20,24,33,.05), 0 8px 22px -12px rgba(20,24,33,.18);
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg); color:var(--text); line-height:1.55; font-size:14px;
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  padding-bottom:calc(78px + env(safe-area-inset-bottom));
+}
+body.noscroll{overflow:hidden}
+a{color:var(--blue);text-decoration:none}
+.mono{font-family:var(--mono)}
+.hide{display:none!important}
+
+/* ---------- header ---------- */
+header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.hd{max-width:480px;margin:0 auto;display:flex;align-items:center;gap:9px;padding:10px 14px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:15.5px;letter-spacing:-.2px;white-space:nowrap}
+.ball{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#e06a2b,#c8102e);position:relative;flex:none}
+.ball:before,.ball:after{content:"";position:absolute;background:rgba(255,255,255,.78)}
+.ball:before{left:50%;top:0;bottom:0;width:1.4px;transform:translateX(-50%)}
+.ball:after{top:50%;left:0;right:0;height:1.4px;transform:translateY(-50%)}
+.hd .sp{flex:1}
+.iconbtn{background:transparent;border:1px solid var(--line);border-radius:8px;padding:5px 10px;font-size:12px;
+  cursor:pointer;color:var(--muted);font-weight:600;font-family:inherit}
+.iconbtn:active{background:var(--panel2)}
+
+.page{max-width:480px;margin:0 auto;padding:14px 14px 0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+.sect{margin-bottom:14px}
+.sect-h{display:flex;align-items:baseline;gap:8px;margin-bottom:9px;padding:0 2px}
+.sect-h h2{font-size:15px;font-weight:800;letter-spacing:-.2px}
+.sect-h .hint{font-size:11.5px;color:var(--muted)}
+.pad{padding:14px}
+
+/* ---------- 工资帽 ---------- */
+.cap{padding:12px 14px 10px}
+.cap-top{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--muted);margin-bottom:7px}
+.cap-top b{font-family:var(--mono);font-size:13px;color:var(--text)}
+.over{color:var(--red)!important;font-weight:800}
+.bar{height:8px;border-radius:5px;background:var(--line2);overflow:hidden;display:flex}
+.bar i{display:block;height:100%;transition:width .2s}
+
+/* ---------- 阵容槽 ---------- */
+.slots{display:flex;flex-direction:column}
+.slot{display:flex;align-items:center;gap:10px;padding:10px 14px;min-height:56px;
+  border-top:1px solid var(--line2);cursor:pointer;transition:background .13s}
+.slot:first-child{border-top:none}
+.slot:active{background:var(--panel2)}
+.slot.empty .sl-add{color:var(--dim);font-size:13.5px}
+.sl-pos{width:28px;flex:none;font-weight:800;font-size:12.5px;color:var(--blue);text-align:center;font-family:var(--mono)}
+.sl-txt{flex:1;min-width:0}
+.sl-nm{font-weight:700;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sl-sub{display:flex;align-items:center;gap:6px;margin-top:3px;font-size:11px;color:var(--muted)}
+.sl-sub .mono{font-family:var(--mono)}
+.sl-rt{margin-left:auto;display:flex;align-items:center;gap:6px;flex:none}
+.sl-pr{font-size:12.5px;font-weight:700;color:var(--muted);font-family:var(--mono)}
+.slot .x{color:var(--dim);font-size:17px;line-height:1;padding:2px 6px;border-radius:6px}
+.slot .x:active{background:var(--red-l);color:var(--red)}
+
+.rowbtns{display:flex;gap:7px;padding:11px 14px;border-top:1px solid var(--line2)}
+
+/* ---------- 阵容构成 ---------- */
+.factbox{margin:0 14px 13px;background:var(--panel2);border:1px solid var(--line2);border-radius:11px;padding:10px 12px}
+.fact-h{font-size:11px;font-weight:700;color:var(--dim);letter-spacing:1px;margin-bottom:4px}
+.factbox p{font-size:12.5px;color:var(--muted);line-height:1.65}
+
+/* ---------- 通用按钮 / 标签 ---------- */
+.btn{background:var(--blue);color:#fff;border:none;border-radius:11px;padding:11px 20px;font-size:14px;
+  font-weight:700;cursor:pointer;font-family:inherit;transition:.15s}
+.btn:active{opacity:.85}
+.btn:disabled{background:#c3ccdb;cursor:not-allowed}
+.btn.ghost{background:var(--panel);color:var(--text);border:1px solid var(--line)}
+.btn.sm{padding:8px 14px;font-size:13px}
+.chip{font-size:12px;padding:5px 11px;border-radius:20px;border:1px solid var(--line);background:var(--panel);
+  cursor:pointer;transition:.13s;font-weight:600;color:var(--muted);user-select:none}
+.chip.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.tabs{display:flex;gap:6px;padding:0 14px 12px;flex-wrap:wrap}
+.tab{padding:6px 13px;border-radius:9px;border:1px solid var(--line);background:var(--panel);
+  font-size:12.5px;cursor:pointer;font-weight:600;color:var(--muted)}
+.tab.on{background:var(--blue);border-color:var(--blue);color:#fff}
+select{font-family:inherit;font-size:13px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;
+  background:var(--panel);outline:none;cursor:pointer;max-width:100%}
+
+/* ---------- 底部固定条 ---------- */
+.actionbar{position:fixed;left:0;right:0;bottom:0;z-index:70;background:rgba(255,255,255,.96);
+  backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:10px 0 calc(10px + env(safe-area-inset-bottom))}
+.actionbar .in{max-width:480px;margin:0 auto;padding:0 14px;display:flex;align-items:center;gap:11px}
+.actionbar .status{font-size:12px;color:var(--muted);font-family:var(--mono);flex:1;min-width:0}
+.actionbar .btn{flex:none;padding:12px 22px}
+
+/* ---------- 选人抽屉 ---------- */
+.mask{position:fixed;inset:0;background:rgba(20,24,33,.45);z-index:100;display:flex;align-items:center;
+  justify-content:center;padding:16px}
+#sheetMask{align-items:flex-end;padding:0;z-index:110}
+.sheet{background:var(--panel);width:100%;max-width:480px;margin:0 auto;border-radius:20px 20px 0 0;
+  max-height:88vh;display:flex;flex-direction:column;animation:up .2s ease-out}
+@keyframes up{from{transform:translateY(26px);opacity:.7}to{transform:none;opacity:1}}
+.sheet-hd{display:flex;align-items:center;padding:14px 16px 11px;border-bottom:1px solid var(--line2)}
+.sheet-hd b{font-size:15px}
+.sheet-hd .x{margin-left:auto;font-size:17px;color:var(--dim);cursor:pointer;padding:2px 8px}
+.filters{padding:11px 16px 7px;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--line2)}
+.frow{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.flbl{font-size:11px;color:var(--muted);font-weight:700;margin-right:2px}
+input.search{width:100%;padding:9px 13px;border:1px solid var(--line);border-radius:20px;font-size:13px;
+  outline:none;font-family:inherit;background:var(--panel2)}
+input.search:focus{border-color:var(--blue);background:var(--panel)}
+.pool{overflow-y:auto;padding:8px 16px 24px;flex:1;-webkit-overflow-scrolling:touch}
+.pcard{display:flex;align-items:center;gap:10px;padding:9px 11px;border:1px solid var(--line);
+  border-radius:11px;margin-bottom:6px;cursor:pointer;background:var(--panel);transition:.12s}
+.pcard:active{border-color:var(--blue);background:var(--blue-l)}
+.pcard.dis{opacity:.34}
+.pcard .info{flex:1;min-width:0}
+.pcard .n{font-weight:700;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pcard .m{font-size:11px;color:var(--muted);font-family:var(--mono);margin-top:1px}
+.pcard .p{font-size:13px;font-weight:700;font-family:var(--mono);flex:none}
+.posb{font-size:10.5px;font-weight:700;color:var(--muted);border:1px solid var(--line);
+  border-radius:5px;padding:1px 5px;flex:none;font-family:var(--mono)}
+.pempty{padding:36px;text-align:center;color:var(--dim);font-size:13px}
+
+/* ---------- 结果 ---------- */
+.rs-win{padding:22px 18px 4px;text-align:center}
+.rs-lbl{font-size:10.5px;font-weight:700;color:var(--dim);letter-spacing:2px;margin-bottom:8px}
+.rs-who{font-size:27px;font-weight:800;line-height:1.22;letter-spacing:-.6px}
+.rs-who span{font-size:15px;font-weight:700}
+.rs-hl{margin-top:9px;font-size:15px;font-weight:700;line-height:1.5}
+.rs-styles{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;padding:13px 18px 0}
+.stl{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted);
+  background:var(--panel2);border:1px solid var(--line2);padding:4px 10px;border-radius:20px}
+.stl i{width:7px;height:7px;border-radius:50%;display:block;flex:none}
+.rs-verdict{padding:15px 18px 4px;font-size:13.5px;line-height:1.85;color:var(--muted)}
+.rs-verdict p{margin-bottom:7px}
+.rs-verdict p:last-child{margin-bottom:0}
+.rs-sec{padding:16px 18px 2px;font-size:10.5px;font-weight:700;color:var(--dim);letter-spacing:2px;
+  border-top:1px solid var(--line2);margin-top:16px}
+.steps{padding:4px 18px 12px}
+.step{display:flex;gap:11px;padding:11px 0;border-bottom:1px dashed var(--line2)}
+.step:last-child{border-bottom:none}
+.step-n{flex:none;width:21px;height:21px;border-radius:50%;background:var(--blue);color:#fff;font-size:11px;
+  font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:2px}
+.step-b{min-width:0}
+.step-b b{display:block;font-size:13.5px;margin-bottom:4px}
+.step-b p{font-size:13px;color:var(--muted);line-height:1.8}
+.mus{padding:4px 18px 12px}
+.mu{padding:11px 0;border-bottom:1px dashed var(--line2)}
+.mu:last-child{border-bottom:none}
+.mu-t{display:flex;align-items:center;gap:8px;font-size:13.5px;margin-bottom:5px;flex-wrap:wrap}
+.mu-vs{font-size:11px;color:var(--dim);background:var(--panel2);border:1px solid var(--line2);
+  padding:1px 7px;border-radius:10px;font-weight:600}
+.mu-d{font-size:12.5px;color:var(--muted);line-height:1.75}
+.rs-acts{display:flex;gap:8px;padding:14px 18px 18px;border-top:1px solid var(--line2);margin-top:8px}
+.rs-acts .btn{flex:1;padding:11px 8px;font-size:13.5px}
+
+/* ---------- 折叠 / 九维 ---------- */
+.morewrap{padding:0 18px 16px}
+.morebtn{width:100%;padding:10px;border:1px dashed var(--line);background:transparent;border-radius:11px;
+  font-size:12.5px;color:var(--muted);cursor:pointer;font-family:inherit;font-weight:600}
+.morebtn:active{border-color:var(--blue);color:var(--blue)}
+.morebox{padding-top:14px}
+.dimhead{display:flex;justify-content:space-between;font-size:11.5px;font-weight:700;margin-bottom:11px}
+.dimrow{display:grid;grid-template-columns:34px 1fr 34px;gap:9px;align-items:center;margin-bottom:9px}
+.dimrow .dl{font-size:12px;font-weight:700;text-align:right;font-family:var(--mono)}
+.dimrow .dr{font-size:12px;font-weight:700;font-family:var(--mono)}
+.dimrow .mid{display:flex;gap:4px;align-items:center}
+.dimrow .dmn{flex:none;width:60px;text-align:center;font-size:10.5px;color:var(--muted)}
+.half{flex:1;height:7px;background:var(--line2);border-radius:5px;overflow:hidden;display:flex}
+.half.l{justify-content:flex-end}
+.half i{display:block;height:100%}
+.dimfoot{font-size:11.5px;color:var(--dim);line-height:1.65;margin-top:12px;padding-top:11px;border-top:1px dashed var(--line2)}
+
+/* ---------- 其它 ---------- */
+.loader{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13.5px;padding:26px 18px}
+.spin{width:15px;height:15px;border:2.5px solid var(--line);border-top-color:var(--blue);border-radius:50%;
+  animation:sp .7s linear infinite;flex:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+.note{font-size:11.5px;color:var(--dim);padding:11px 18px 14px;border-top:1px dashed var(--line2);line-height:1.65}
+.note.bad{border-left:3px solid var(--red);text-align:left;font-size:12.5px;line-height:1.75;color:var(--muted)}
+.code{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:11px;font-family:var(--mono);
+  font-size:11px;white-space:pre-wrap;word-break:break-all;max-height:200px;overflow-y:auto;line-height:1.55}
+textarea{width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:9px;font-size:12px;
+  font-family:var(--mono);outline:none;resize:vertical;min-height:62px;background:var(--panel2)}
+
+/* ---------- 弹窗 ---------- */
+.modal{background:var(--panel);border-radius:16px;max-width:480px;width:100%;max-height:86vh;
+  overflow-y:auto;padding:20px}
+.modal h3{font-size:16px;margin-bottom:5px}
+.modal .desc{font-size:12.5px;color:var(--muted);margin-bottom:14px;line-height:1.7}
+.fld{margin-bottom:12px}
+.fld label{display:block;font-size:12.5px;font-weight:700;margin-bottom:5px}
+.fld input{width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:9px;font-size:13px;
+  font-family:inherit;outline:none;background:var(--panel2)}
+.fld input:focus{border-color:var(--blue);background:var(--panel)}
+.fld .tip{font-size:11px;color:var(--dim);margin-top:5px;line-height:1.6}
+.modal .row{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+.preset{display:inline-block;padding:6px 11px;margin:0 6px 7px 0;border-radius:999px;font-size:12.5px;
+  border:1px solid var(--line);background:var(--panel2);cursor:pointer;user-select:none}
+.preset.on{border-color:var(--blue);background:var(--blue-l);box-shadow:0 0 0 2px var(--blue-l)}
+.preset.no{opacity:.5}
+.preset b{font-weight:700}
+.preset em{font-style:normal;color:var(--muted);font-size:11px;margin-left:3px}
+.diag{margin-top:10px;padding:10px 12px;border-radius:9px;font-size:12.5px;line-height:1.7;
+  background:var(--panel2);border:1px solid var(--line);white-space:pre-wrap;word-break:break-all}
+.diag.ok{background:var(--green-l);border-color:#bfe3ce;color:var(--green)}
+.diag.bad{background:var(--red-l);border-color:#f3c6ce;color:var(--red)}
+.modal table th{text-align:left;font-size:11.5px;color:var(--muted);font-weight:700;padding:5px 4px;border-bottom:1px solid var(--line)}
+.modal table td{padding:5px 4px;border-bottom:1px solid var(--line2)}
+
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:#141821;color:#fff;
+  padding:10px 20px;border-radius:22px;font-size:13px;z-index:200;opacity:0;transition:.25s;
+  pointer-events:none;font-weight:600;max-width:88vw;text-align:center}
+.toast.on{opacity:1;bottom:106px}
+
+@media(max-width:360px){
+  .rs-who{font-size:23px}
+  .actionbar .btn{padding:11px 16px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="hd">
+    <div class="logo"><span class="ball"></span>首发五人对决</div>
+    <span class="sp"></span>
+    <button class="iconbtn" id="dataBtn">怎么玩</button>
+    <button class="iconbtn" id="cfgBtn">模型</button>
+  </div>
+</header>
+
+<main class="page">
+
+  <!-- ① 组队 -->
+  <section class="sect">
+    <div class="sect-h"><h2>① 你的首发五人</h2><span class="hint">工资帽 100%</span></div>
+    <div class="card">
+      <div class="cap">
+        <div class="cap-top"><span>工资帽</span><b id="budgetTxt">0% / 100%</b></div>
+        <div class="bar" id="bar"></div>
+      </div>
+      <div class="slots" id="slots"></div>
+      <div class="rowbtns">
+        <button class="chip" id="clearBtn">清空</button>
+        <button class="chip" id="randBtn">随机一支</button>
+      </div>
+      <div class="factbox hide" id="myProfile" style="margin-top:0;margin-bottom:0;border:none;border-top:1px solid var(--line2);border-radius:0">
+        <div class="fact-h">阵容构成</div>
+        <p id="myDesc"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ② 对手 -->
+  <section class="sect">
+    <div class="sect-h"><h2>② 挑对手</h2><span class="hint">三选一</span></div>
+    <div class="card">
+      <div class="tabs" id="oppTabs" style="padding:12px 14px 10px">
+        <span class="tab on" data-m="team">真实球队</span>
+        <span class="tab" data-m="manual">自己组</span>
+        <span class="tab" data-m="link">挑战码</span>
+      </div>
+
+      <div id="oppTeam" style="padding-bottom:8px">
+        <div style="padding:0 14px 11px"><select id="teamSel" style="width:100%"></select></div>
+        <div class="slots" id="oppSlots"></div>
+      </div>
+
+      <div id="oppManual" class="hide" style="padding-bottom:8px">
+        <div style="padding:0 14px 9px;font-size:12px;color:var(--muted)">点下面的位置自己挑五个人</div>
+        <div class="slots" id="oppSlots2"></div>
+      </div>
+
+      <div id="oppLink" class="hide">
+        <div style="padding:0 14px 12px">
+          <textarea id="codeIn" placeholder="粘贴朋友发来的挑战码…"></textarea>
+          <div style="display:flex;gap:8px;margin-top:9px">
+            <button class="btn sm" id="loadCodeBtn" style="flex:1">载入对手阵容</button>
+            <button class="btn ghost sm" id="copyCodeBtn" style="flex:1">复制我的码</button>
+          </div>
+          <div class="code" id="myCode" style="margin-top:11px">先组满五人，这里会自动生成。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ③ 结果 -->
+  <section class="sect hide" id="resultSect">
+    <div class="sect-h"><h2>③ 分析结果</h2></div>
+    <div class="card" id="resultCard"></div>
+  </section>
+
+  <div style="text-align:center;font-size:11px;color:var(--dim);padding:6px 20px 18px;line-height:1.7">
+    球员名单为 2026-27 赛季开季预测阵容，数值参考 2025-26 常规赛数据<br>本工具为增长玩法原型，与 NBA 官方无关
+  </div>
+</main>
+
+<!-- 底部固定条 -->
+<div class="actionbar">
+  <div class="in">
+    <span class="status" id="statusTxt">还没开始</span>
+    <button class="btn" id="goBtn" disabled>开始分析</button>
+  </div>
+</div>
+
+<!-- 选人抽屉 -->
+<div class="mask hide" id="sheetMask">
+  <div class="sheet">
+    <div class="sheet-hd"><b id="sheetTitle">选人</b><span class="x" id="sheetClose">✕</span></div>
+    <div class="filters" id="filters"></div>
+    <div class="pool" id="pool"></div>
+  </div>
+</div>
+
+<div class="mask hide" id="mask"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast"></div>
+<script>
+/* ========== 规则与球员数据库 ==========
+   分档依据：《2026-27 NBA 季前球员评级分档》（10-12 分制）
+   定价依据：每一档身价 = 该级别球员占真实工资帽的比例（顶薪 35/33/28/24，全额中产 10，迷你中产 7，底薪 2）
+   名单口径：2026-27 开季预测阵容 · 数据口径：2025-26 常规赛 */
+const CAP = 100;
+const TIERS = {
+  11:{n:"MVP领跑者", p:35, c:"#a1122c", bg:"#fdebed"},
+  10:{n:"MVP候选人", p:33, c:"#c8382b", bg:"#fdeeea"},
+  9:{n:"最佳阵容候选", p:28, c:"#e0661f", bg:"#fef3e8"},
+  8:{n:"全明星候选", p:24, c:"#e8901c", bg:"#fef8e7"},
+  7:{n:"高配首发", p:20, c:"#cd9a17", bg:"#fdf6e3"},
+  6:{n:"可靠首发", p:16, c:"#9aa32c", bg:"#f5f8e5"},
+  5:{n:"低配首发", p:13, c:"#4f9d5d", bg:"#eaf6ec"},
+  4:{n:"优质替补", p:10, c:"#2f8a6a", bg:"#e7f5f0"},
+  3:{n:"普通轮换", p:7, c:"#3a7ca8", bg:"#e9f2f8"},
+  2:{n:"板凳末端", p:4, c:"#4a5f9e", bg:"#eceff8"},
+  1:{n:"不该上场", p:2, c:"#7a828e", bg:"#eff1f4"}
+};
+const TEAMS = {
+  ATL:"亚特兰大老鹰", BOS:"波士顿凯尔特人", BKN:"布鲁克林篮网", CHA:"夏洛特黄蜂", CHI:"芝加哥公牛", CLE:"克里夫兰骑士", DAL:"达拉斯独行侠", DEN:"丹佛掘金", DET:"底特律活塞", GSW:"金州勇士", HOU:"休斯顿火箭", IND:"印第安纳步行者", LAC:"洛杉矶快船", LAL:"洛杉矶湖人", MEM:"孟菲斯灰熊", MIA:"迈阿密热火", MIL:"密尔沃基雄鹿", MIN:"明尼苏达森林狼", NOP:"新奥尔良鹈鹕", NYK:"纽约尼克斯", OKC:"俄克拉荷马雷霆", ORL:"奥兰多魔术", PHI:"费城76人", PHO:"菲尼克斯太阳", POR:"波特兰开拓者", SAC:"萨克拉门托国王", SAS:"圣安东尼奥马刺", TOR:"多伦多猛龙", UTA:"犹他爵士", WAS:"华盛顿奇才"
+};
+/* [英文名, 中文名, 队, 位置, 档位1-11, 分档表评分, 出场, 得分, 篮板, 助攻, 抢断, 盖帽, 投篮‰, 三分‰, 标签] */
+const RAW = [
+["Nikola Jokic","尼古拉·约基奇","DEN","C",11,11.4,65,27.7,12.9,10.7,1.4,0.8,569,380,"策应,低位,篮板,慢节奏,关键球"],
+["Shai Gilgeous-Alexander","谢伊·吉尔杰斯-亚历山大","OKC","PG",11,11.4,68,31.1,4.3,6.6,1.4,0.8,553,386,"持球大核,突破,中距离,造犯规,关键球"],
+["Victor Wembanyama","维克托·文班亚马","SAS","C",11,11.1,64,25.0,11.5,3.1,1.0,3.1,512,349,"护框,体型优势,三分,内线终结"],
+["Luka Doncic","卢卡·东契奇","LAL","PG",11,11.0,64,33.5,7.7,8.3,1.6,0.5,476,366,"持球大核,三分,挡拆,造犯规"],
+["Giannis Antetokounmpo","扬尼斯·阿德托昆博","MIA","PF",10,10.7,36,27.6,9.8,5.4,0.9,0.7,624,333,"突破,转换,护框,内线终结,伤病隐患"],
+["Cade Cunningham","凯德·坎宁安","DET","PG",9,9.9,64,23.9,5.5,9.9,1.4,0.8,461,342,"持球大核,挡拆,组织核心,中距离"],
+["Kawhi Leonard","科怀·伦纳德","LAC","SF",9,9.9,65,27.9,6.4,3.6,1.9,0.4,505,387,"中距离,外线防守,单打,伤病隐患"],
+["Jalen Brunson","杰伦·布伦森","NYK","PG",9,9.7,74,26.0,3.3,6.8,0.8,0.1,467,369,"关键球,中距离,挡拆,小个子"],
+["Donovan Mitchell","多诺万·米切尔","CLE","SG",9,9.6,70,27.9,4.5,5.7,1.5,0.3,483,364,"单打,三分,突破"],
+["Anthony Edwards","安东尼·爱德华兹","MIN","SG",9,9.4,61,28.8,5.0,3.7,1.4,0.8,489,399,"单打,三分,突破"],
+["Jayson Tatum","杰森·塔图姆","BOS","PF",9,9.3,16,21.8,10.0,5.3,1.4,0.2,411,329,"单打,三分,重伤初愈"],
+["Stephen Curry","斯蒂芬·库里","GSW","PG",9,9.2,43,26.6,3.6,4.7,1.1,0.4,468,393,"三分,无球跑动,引力,老将"],
+["Kevin Durant","凯文·杜兰特","HOU","SF",9,9.1,78,26.0,5.5,4.8,0.8,0.9,520,413,"中距离,单打,无球跑动,老将"],
+["Karl-Anthony Towns","卡尔-安东尼·唐斯","NYK","C",9,9.0,75,20.1,11.9,3.0,0.9,0.5,501,368,"空间型内线,三分,篮板"],
+["Tyrese Maxey","泰瑞斯·马克西","PHI","PG",9,9.0,70,28.3,4.1,6.6,1.9,0.8,462,367,"快攻,三分,突破"],
+["Jamal Murray","贾马尔·穆雷","DEN","PG",8,8.6,75,25.4,4.4,7.1,0.9,0.4,483,435,"三分,挡拆,关键球"],
+["Tyrese Haliburton","泰瑞斯·哈利伯顿","IND","PG",8,8.6,0,18.6,4.0,9.2,1.2,0.4,473,378,"组织核心,挡拆,转换,重伤初愈"],
+["Joel Embiid","乔尔·恩比德","PHI","C",8,8.5,38,26.9,7.7,3.9,0.6,1.2,489,333,"低位,中距离,护框,伤病隐患"],
+["Scottie Barnes","斯科蒂·巴恩斯","TOR","PF",8,8.5,80,18.1,7.5,5.9,1.4,1.5,507,304,"全能前锋,换防,组织核心"],
+["Chet Holmgren","切特·霍姆格伦","OKC","PF",8,8.3,69,17.1,8.9,1.7,0.6,1.9,557,362,"护框,空间型内线,换防"],
+["James Harden","詹姆斯·哈登","CLE","PG",8,8.1,70,23.6,4.8,8.0,1.1,0.4,434,375,"挡拆,组织核心,造犯规,老将"],
+["Jaylen Brown","杰伦·布朗","PHI","SF",8,8.1,71,28.7,6.9,5.1,1.0,0.4,477,347,"单打,突破,转换,外线防守,造犯规"],
+["Lauri Markkanen","劳里·马尔卡宁","UTA","PF",8,8.0,42,26.7,6.9,2.1,1.0,0.5,477,355,"空间型内线,三分,体型优势"],
+["Anthony Davis","安东尼·戴维斯","WAS","PF",7,7.9,20,20.4,11.1,2.8,1.1,1.7,506,270,"护框,内线终结,篮板,伤病隐患"],
+["Bam Adebayo","巴姆·阿德巴约","MIA","C",7,7.9,73,20.1,10.0,3.2,1.2,0.7,442,318,"换防,护框,策应,中距离"],
+["Deni Avdija","德尼·阿夫迪亚","POR","PF",7,7.9,66,24.2,6.9,6.7,0.8,0.6,462,318,"全能前锋,突破,组织核心"],
+["Devin Booker","德文·布克","PHO","PG",7,7.9,64,26.1,3.9,6.0,0.8,0.3,456,330,"中距离,单打,无球跑动"],
+["Jalen Johnson","杰伦·约翰逊","ATL","PF",7,7.9,72,22.5,10.3,7.9,1.2,0.4,489,352,"全能前锋,转换,组织核心,篮板"],
+["OG Anunoby","OG·阿努诺比","NYK","PF",7,7.9,67,16.7,5.2,2.2,1.6,0.7,484,386,"外线防守,三分,换防"],
+["Pascal Siakam","帕斯卡尔·西亚卡姆","IND","PF",7,7.9,62,24.0,6.6,3.8,1.1,0.4,484,358,"转换,中距离,全能前锋"],
+["Evan Mobley","埃文·莫布里","CLE","PF",7,7.8,65,18.2,9.0,3.6,0.7,1.7,546,297,"护框,换防,内线终结"],
+["Derrick White","德里克·怀特","BOS","SG",7,7.7,77,16.5,4.4,5.4,1.1,1.3,394,327,"外线防守,三分,组织核心,换防"],
+["Franz Wagner","弗朗茨·瓦格纳","ORL","SF",7,7.7,34,20.6,5.2,3.3,0.9,0.3,481,345,"全能前锋,突破,伤病隐患"],
+["Jalen Williams","杰伦·威廉姆斯","OKC","SF",7,7.7,33,17.1,4.6,5.5,1.2,0.3,484,299,"全能前锋,中距离,换防,伤病隐患"],
+["LaMelo Ball","拉梅洛·鲍尔","MIN","PG",7,7.7,72,20.1,4.8,7.1,1.2,0.2,407,368,"组织核心,三分,转换,伤病隐患"],
+["LeBron James","勒布朗·詹姆斯","PHI","PF",7,7.7,60,20.9,6.1,7.2,1.2,0.6,515,317,"组织核心,转换,老将,突破"],
+["Austin Reaves","奥斯汀·里夫斯","LAL","SG",7,7.6,51,23.3,4.7,5.5,1.1,0.4,490,360,"无球跑动,造犯规,组织核心"],
+["Alperen Sengun","阿尔佩伦·申京","HOU","C",7,7.5,72,20.4,8.9,6.2,1.2,1.1,519,305,"策应,低位,篮板,中距离"],
+["Cooper Flagg","库珀·弗拉格","DAL","SF",7,7.5,70,21.0,6.7,4.5,1.2,0.9,468,295,"全能前锋,突破,换防,护框"],
+["Jimmy Butler","吉米·巴特勒","GSW","SF",7,7.5,38,20.0,5.6,4.9,1.4,0.2,519,376,"造犯规,关键球,外线防守,老将,伤病隐患"],
+["Amen Thompson","阿门·汤普森","HOU","SG",7,7.3,79,18.3,7.8,5.3,1.5,0.6,534,216,"外线防守,换防,突破,转换,无空间"],
+["Kyrie Irving","凯里·欧文","DAL","PG",7,7.3,0,24.0,4.0,5.2,1.2,0.3,490,395,"持球大核,关键球,三分,重伤初愈"],
+["Jalen Duren","杰伦·杜伦","DET","C",7,7.2,70,19.5,10.5,2.0,0.8,0.8,650,0,"内线终结,篮板,空接,无空间"],
+["Jarrett Allen","贾勒特·阿伦","CLE","C",7,7.1,56,15.4,8.5,1.8,1.0,0.8,638,100,"内线终结,护框,篮板,无空间"],
+["Desmond Bane","德斯蒙德·贝恩","ORL","SG",7,7.0,82,20.1,4.1,4.1,1.0,0.5,484,391,"三分,无球跑动"],
+["Rudy Gobert","鲁迪·戈贝尔","MIN","C",7,7.0,76,10.9,11.5,1.7,0.8,1.6,682,0,"护框,篮板,吃饼,无空间"],
+["Zion Williamson","锡安·威廉森","NOP","PF",7,7.0,62,21.0,5.7,3.2,1.0,0.5,600,250,"突破,内线终结,伤病隐患"],
+["Julius Randle","朱利叶斯·兰德尔","BKN","PF",6,6.9,79,21.1,6.7,5.0,1.1,0.2,481,315,"单打,内线终结,篮板"],
+["Paolo Banchero","保罗·班凯罗","ORL","PF",6,6.9,72,22.2,8.4,5.2,0.7,0.6,459,305,"单打,突破,体型优势"],
+["Trey Murphy III","特雷·墨菲三世","NOP","SG",6,6.9,66,21.5,5.7,3.8,1.5,0.4,470,379,"三分,无球跑动,体型优势"],
+["Trae Young","特雷·杨","WAS","PG",6,6.8,15,17.9,2.0,8.0,0.9,0.1,458,338,"组织核心,挡拆,三分,伤病隐患"],
+["Brandon Miller","布兰登·米勒","CHA","SF",6,6.7,65,20.2,4.9,3.3,1.0,0.7,435,383,"三分,无球跑动,单打"],
+["De'Aaron Fox","德阿隆·福克斯","SAS","PG",6,6.7,72,18.6,3.8,6.2,1.2,0.3,486,332,"突破,转换,关键球"],
+["Mikal Bridges","米卡尔·布里奇斯","NYK","SF",6,6.7,82,14.4,3.8,3.7,1.3,0.8,490,371,"外线防守,无球跑动"],
+["Paul George","保罗·乔治","BOS","SF",6,6.7,37,17.3,5.3,3.6,1.7,0.4,439,392,"三分,外线防守,中距离,老将"],
+["Stephon Castle","斯蒂芬·卡斯尔","SAS","PG",6,6.7,68,16.7,5.3,7.4,1.1,0.3,471,332,"组织核心,突破,外线防守"],
+["Kon Knueppel","康·克努佩尔","CHA","SF",6,6.6,81,18.5,5.3,3.4,0.7,0.2,475,425,"三分,无球跑动"],
+["Darius Garland","达柳斯·加兰","LAC","PG",6,6.5,45,18.8,2.4,6.7,1.0,0.2,460,396,"挡拆,三分,组织核心"],
+["Domantas Sabonis","多曼塔斯·萨博尼斯","SAC","C",6,6.5,19,15.8,11.4,4.1,0.9,0.2,543,185,"篮板,策应,低位,伤病隐患"],
+["Michael Porter Jr.","小迈克尔·波特","BKN","SF",6,6.5,52,24.2,7.1,3.0,1.1,0.3,463,363,"三分,无球跑动,体型优势,伤病隐患"],
+["Aaron Gordon","阿隆·戈登","DEN","PF",6,6.4,36,16.2,5.8,2.7,0.6,0.3,497,389,"内线终结,外线防守,吃饼"],
+["Damian Lillard","达米安·利拉德","POR","PG",6,6.4,0,22.0,4.0,6.5,0.8,0.3,430,370,"三分,关键球,挡拆,重伤初愈"],
+["Nickeil Alexander-Walker","尼基尔·亚历山大-沃克","ATL","SG",6,6.4,78,20.8,3.4,3.7,1.3,0.5,459,399,"三分,外线防守"],
+["Tyler Herro","泰勒·希罗","MIL","SG",6,6.4,33,20.5,4.8,4.1,0.7,0.4,480,378,"三分,无球跑动,中距离,老将"],
+["Jaden McDaniels","杰登·麦克丹尼尔斯","MIN","PF",6,6.3,73,14.8,4.2,2.7,1.1,1.0,515,412,"外线防守,换防,三分"],
+["Dylan Harper","迪伦·哈珀","SAS","SG",6,6.2,69,11.8,3.4,3.9,0.8,0.3,505,343,"突破,组织核心,换防"],
+["Isaiah Hartenstein","以赛亚·哈滕斯坦","OKC","C",6,6.2,47,9.2,9.4,3.5,1.0,0.8,622,0,"篮板,策应,护框,无空间"],
+["Norman Powell","诺曼·鲍威尔","CHI","SG",6,6.2,58,21.7,3.5,2.5,1.1,0.2,470,380,"三分,无球跑动,快攻"],
+["Walker Kessler","沃克·凯斯勒","LAL","C",6,6.2,60,9.2,9.4,1.2,0.6,2.4,670,0,"护框,篮板,吃饼,无空间"],
+["Dyson Daniels","戴森·丹尼尔斯","ATL","SF",6,6.1,76,11.9,6.8,5.9,2.0,0.4,517,188,"抢断,外线防守,组织核心,无空间"],
+["Immanuel Quickley","伊曼纽尔·奎克利","TOR","PG",6,6.1,70,16.4,4.0,5.9,1.3,0.1,443,374,"挡拆,三分,组织核心"],
+["Ivica Zubac","伊维察·祖巴茨","IND","C",6,6.1,48,14.1,10.6,2.2,0.4,0.8,598,0,"内线终结,篮板,护框,无空间"],
+["Jrue Holiday","朱·霍勒迪","POR","PG",6,6.1,53,16.3,4.6,6.1,1.0,0.1,451,378,"外线防守,组织核心,老将"],
+["Payton Pritchard","佩顿·普里查德","BOS","PG",6,6.1,79,17.0,3.9,5.2,0.7,0.1,464,377,"三分,无球跑动,挡拆"],
+["Brandon Ingram","布兰登·英格拉姆","TOR","SF",6,6.0,77,21.5,5.6,3.7,0.8,0.7,477,382,"中距离,单打,无球跑动"],
+["Donovan Clingan","多诺万·克林根","POR","C",6,6.0,77,12.1,11.6,2.1,0.6,1.7,520,341,"护框,篮板,吃饼"],
+["Ja Morant","贾·莫兰特","POR","PG",6,6.0,20,19.5,3.3,8.1,1.0,0.3,410,235,"突破,组织核心,转换,伤病隐患"],
+["Jalen Suggs","杰伦·萨格斯","ORL","PG",6,6.0,57,13.8,3.9,5.5,1.8,0.7,435,339,"外线防守,组织核心"],
+["Kristaps Porzingis","克里斯塔普斯·波尔津吉斯","GSW","C",6,6.0,32,16.7,5.2,2.5,0.6,1.2,446,338,"空间型内线,护框,三分,伤病隐患"],
+["VJ Edgecombe","VJ·埃奇科姆","PHI","SG",6,6.0,75,16.0,5.6,4.2,1.4,0.5,438,354,"快攻,外线防守,突破"],
+["Andrew Wiggins","安德鲁·维金斯","MIA","SF",5,5.9,68,15.4,4.8,2.7,1.1,1.0,475,414,"外线防守,三分"],
+["Ausar Thompson","奥萨尔·汤普森","DET","SF",5,5.9,73,9.9,5.7,3.1,2.0,0.9,525,250,"抢断,外线防守,转换,无空间"],
+["Dillon Brooks","狄龙·布鲁克斯","PHO","SF",5,5.9,56,20.2,3.6,1.8,1.0,0.2,435,344,"外线防守,三分,造犯规"],
+["Josh Giddey","约什·吉迪","CHI","PG",5,5.9,54,17.0,8.3,9.1,1.0,0.5,448,364,"组织核心,篮板,转换,体型优势"],
+["Josh Hart","约什·哈特","NYK","SG",5,5.9,66,12.0,7.4,4.8,1.1,0.3,508,413,"篮板,无球跑动,外线防守"],
+["Julian Champagnie","朱利安·尚帕涅","SAS","SF",5,5.9,82,11.1,5.8,1.5,0.8,0.5,437,381,"三分,外线防守"],
+["RJ Barrett","RJ·巴雷特","TOR","SG",5,5.9,57,19.3,5.3,3.3,0.7,0.3,491,339,"突破,转换"],
+["CJ McCollum","CJ·麦科勒姆","ATL","PG",5,5.8,76,18.7,3.3,3.9,0.8,0.5,455,375,"中距离,单打,无球跑动"],
+["Devin Vassell","德文·瓦塞尔","SAS","SG",5,5.8,67,13.9,4.0,2.5,0.9,0.4,437,384,"三分,无球跑动"],
+["Keyonte George","基恩特·乔治","UTA","PG",5,5.8,54,23.6,3.7,6.1,1.1,0.3,456,371,"三分,挡拆,单打"],
+["Andrew Nembhard","安德鲁·内姆哈德","IND","PG",5,5.7,33,17.4,2.6,7.2,0.9,0.2,444,364,"组织核心,外线防守"],
+["Dejounte Murray","德章泰·穆雷","NOP","PG",5,5.7,14,16.7,5.4,6.4,1.6,0.2,484,306,"外线防守,组织核心,中距离,伤病隐患"],
+["Miles Bridges","迈尔斯·布里奇斯","PHO","PF",5,5.7,77,17.1,5.8,3.2,0.6,0.4,460,333,"转换,内线终结,三分"],
+["Ty Jerome","泰·杰罗姆","MEM","SG",5,5.7,15,19.7,2.8,5.7,1.1,0.3,474,420,"三分,挡拆,组织核心"],
+["Neemias Queta","内米亚斯·凯塔","BOS","C",5,5.6,76,10.2,8.4,1.7,0.8,1.3,653,125,"护框,篮板,吃饼"],
+["Onyeka Okongwu","奥涅卡·奥孔古","ATL","C",5,5.6,74,15.2,7.6,3.1,1.1,1.1,480,376,"护框,篮板,吃饼"],
+["Alex Sarr","亚历克斯·萨尔","WAS","C",5,5.5,48,16.3,7.4,2.7,0.8,2.0,482,333,"护框,空间型内线"],
+["Cameron Boozer","卡梅隆·布泽尔","MEM","PF",5,5.5,62,15.8,8.6,2.6,0.9,1.4,508,336,"篮板,内线终结,新秀"],
+["Cameron Johnson","卡梅隆·约翰逊","DEN","SF",5,5.5,54,12.2,3.8,2.4,0.7,0.4,480,430,"三分,无球跑动"],
+["Coby White","科比·怀特","CHA","PG",5,5.5,50,17.4,3.4,4.0,0.5,0.1,446,362,"三分,挡拆"],
+["Naz Reid","纳兹·里德","CHA","PF",5,5.5,77,13.6,6.2,2.2,1.0,1.0,456,362,"空间型内线,三分,护框"],
+["Tobias Harris","托拜亚斯·哈里斯","SAS","PF",5,5.5,63,13.3,5.1,2.5,0.9,0.4,469,368,"中距离,无球跑动,老将"],
+["Collin Gillespie","科林·吉莱斯皮","PHO","PG",5,5.4,80,12.7,4.1,4.6,1.2,0.2,418,401,"三分,组织核心,外线防守"],
+["Jabari Smith Jr.","小贾巴里·史密斯","HOU","PF",5,5.4,77,15.8,6.9,1.9,0.7,0.9,450,363,"空间型内线,三分,护框"],
+["Ryan Rollins","莱恩·罗林斯","MIL","PG",5,5.4,74,17.3,4.6,5.6,1.5,0.4,472,406,"三分,组织核心"],
+["Zach LaVine","扎克·拉文","SAC","SG",5,5.4,39,19.2,2.8,2.3,0.7,0.3,479,390,"三分,单打"],
+["Ayo Dosunmu","阿约·多苏穆","MIN","SF",5,5.3,69,14.8,3.4,3.6,0.8,0.3,517,439,"三分,外线防守,无球跑动"],
+["Brandin Podziemski","布兰丁·波杰姆斯基","GSW","SG",5,5.3,82,13.8,5.1,3.7,1.1,0.2,455,371,"无球跑动,篮板"],
+["Cedric Coward","塞德里克·考沃德","MEM","SF",5,5.3,62,13.6,5.9,2.8,0.6,0.4,471,338,"外线防守,突破"],
+["Kel'el Ware","凯尔·韦尔","MIL","C",5,5.3,77,11.1,9.0,0.7,0.8,1.1,530,395,"护框,篮板,空间型内线"],
+["Kevin Porter Jr.","小凯文·波特","MIL","PG",5,5.3,38,17.4,5.2,7.4,2.2,0.5,465,322,"组织核心,突破,抢断"],
+["Myles Turner","迈尔斯·特纳","MIL","C",5,5.3,71,11.9,5.3,1.5,0.7,1.6,440,383,"护框,空间型内线,三分"],
+["Toumani Camara","图马尼·卡马拉","POR","SF",5,5.3,82,13.4,5.1,2.5,1.1,0.4,440,370,"外线防守,换防,篮板"],
+["Zach Edey","扎克·伊迪","MEM","C",5,5.3,65,10.4,9.2,1.5,0.5,1.5,610,300,"篮板,护框,新秀"],
+["Cason Wallace","卡森·华莱士","OKC","SG",5,5.2,77,8.6,3.1,2.6,1.9,0.4,432,351,"外线防守,抢断"],
+["Grayson Allen","格雷森·阿伦","CHA","SG",5,5.2,51,16.5,3.0,3.8,1.4,0.3,403,349,"三分,无球跑动"],
+["Duncan Robinson","邓肯·罗宾逊","DET","SF",5,5.1,77,12.2,2.7,2.1,0.6,0.3,456,410,"三分,无球跑动"],
+["Jalen Green","杰伦·格林","PHO","SG",5,5.1,32,17.8,3.6,2.8,1.1,0.3,422,313,"突破,单打,快攻"],
+["Keegan Murray","基根·穆雷","SAC","PF",5,5.1,23,14.0,5.7,1.0,1.0,1.6,420,277,"三分,护框,换防,伤病隐患"],
+["Matas Buzelis","马塔斯·布泽利斯","CHI","PF",5,5.1,77,16.3,5.8,2.1,0.7,1.5,463,349,"护框,三分,转换"],
+["Mitchell Robinson","米切尔·罗宾逊","BOS","C",5,5.1,60,5.7,8.8,0.9,0.9,1.2,723,0,"护框,篮板,吃饼,无空间"],
+["Naji Marshall","纳吉·马歇尔","DAL","SF",5,5.1,74,15.2,4.7,3.3,1.1,0.1,510,291,"突破,内线终结"],
+["Peyton Watson","佩顿·沃特森","CLE","SF",5,5.1,54,14.6,4.9,2.1,0.9,1.1,491,411,"护框,换防,三分"],
+["Saddiq Bey","萨迪克·贝","NOP","SF",5,5.1,72,17.7,5.6,2.5,0.9,0.1,451,367,"三分,篮板"],
+["Wendell Carter Jr.","小温德尔·卡特","ORL","C",5,5.1,78,11.8,7.4,2.0,0.8,0.6,512,319,"篮板,护框,吃饼"],
+["Collin Murray-Boyles","科林·默里-博伊尔斯","TOR","PF",5,5.0,57,8.5,5.0,1.9,0.9,0.9,579,340,"篮板,换防"],
+["Donte DiVincenzo","丹特·迪文琴佐","MIN","SG",5,5.0,82,12.2,4.1,3.8,1.3,0.4,406,379,"三分,外线防守"],
+["P.J. Washington","PJ·华盛顿","DAL","PF",5,5.0,31,14.6,7.4,1.9,1.0,1.4,455,310,"护框,内线终结"],
+["Santi Aldama","桑蒂·阿尔达马","DAL","PF",5,5.0,43,14.0,6.7,2.9,0.9,0.7,479,350,"空间型内线,三分"],
+["Tre Jones","特雷·琼斯","CHI","PG",5,5.0,65,14.1,3.1,5.4,1.2,0.2,553,315,"组织核心,外线防守"],
+["Aaron Nesmith","阿隆·内史密斯","IND","SF",4,4.9,45,13.8,4.2,1.9,0.6,0.5,414,379,"三分,外线防守"],
+["Anthony Black","安东尼·布莱克","ORL","PG",4,4.9,64,15.0,3.8,3.7,1.4,0.7,447,333,"外线防守,突破"],
+["Christian Braun","克里斯蒂安·布劳恩","DEN","SG",4,4.9,44,12.0,4.8,2.7,0.7,0.3,519,301,"外线防守,突破,篮板"],
+["Davion Mitchell","戴维恩·米切尔","MIA","PG",4,4.9,70,9.3,2.7,6.5,1.0,0.2,490,395,"组织核心,外线防守"],
+["DeMar DeRozan","德玛尔·德罗赞","DEN","SF",4,4.9,77,18.4,2.9,4.1,1.0,0.3,497,320,"中距离,单打,老将"],
+["Jakob Poeltl","雅各布·珀尔特尔","TOR","C",4,4.9,46,10.7,7.0,2.0,0.9,0.7,700,0,"护框,篮板,吃饼,无空间"],
+["Keldon Johnson","凯尔登·约翰逊","SAS","SF",4,4.9,82,13.2,5.4,1.4,0.6,0.1,519,363,"内线终结,突破"],
+["Marcus Smart","马库斯·斯玛特","HOU","PG",4,4.9,62,9.3,2.8,3.0,1.4,0.4,395,331,"外线防守,造犯规,老将"],
+["Mark Williams","马克·威廉姆斯","PHO","C",4,4.9,60,11.7,8.0,1.0,0.9,0.9,644,1000,"吃饼,护框,篮板,无空间"],
+["Moussa Diabate","穆萨·迪亚巴特","CHA","C",4,4.9,73,7.9,8.7,1.9,0.8,1.0,631,500,"篮板,护框"],
+["Sandro Mamukelashvili","桑德罗·马穆克拉什维利","LAL","SF",4,4.9,80,11.2,4.9,1.9,0.8,0.5,523,389,"篮板,空间型内线"],
+["Tari Eason","塔里·伊森","HOU","PF",4,4.9,60,10.5,6.3,1.5,1.2,0.5,416,358,"外线防守,篮板,换防"],
+["Draymond Green","德雷蒙德·格林","GSW","PF",4,4.8,68,8.4,5.5,5.5,0.9,0.6,418,326,"组织核心,换防,外线防守,老将,无空间"],
+["Nic Claxton","尼克·克拉克斯顿","CHI","C",4,4.8,69,11.7,6.9,3.7,0.7,1.1,571,158,"护框,吃饼,换防"],
+["Reed Sheppard","里德·谢泼德","HOU","PG",4,4.8,82,13.5,2.9,3.4,1.5,0.7,430,394,"三分,抢断,无球跑动"],
+["Cam Spencer","卡姆·斯宾塞","MEM","SG",4,4.7,72,11.1,2.5,5.6,0.7,0.2,473,449,"三分,组织核心"],
+["Darryn Peterson","达林·彼得森","UTA","SG",4,4.7,60,15.2,4.1,4.0,1.0,0.3,452,361,"突破,单打,组织核心,新秀"],
+["Deandre Ayton","德安德烈·艾顿","WAS","C",4,4.7,72,12.5,8.0,0.8,0.6,1.0,671,0,"内线终结,篮板,吃饼,无空间"],
+["Dereck Lively II","德雷克·莱夫利二世","DAL","C",4,4.7,55,9.0,7.4,1.6,0.7,1.5,660,0,"护框,吃饼,篮板,无空间"],
+["Jerami Grant","杰拉米·格兰特","MEM","PF",4,4.7,57,18.6,3.5,2.1,0.7,0.6,453,389,"三分,外线防守,换防"],
+["John Collins","约翰·科林斯","DET","PF",4,4.7,69,13.6,5.3,1.0,0.9,0.7,552,406,"内线终结,空接,三分"],
+["Quentin Grimes","昆汀·格莱姆斯","LAL","SG",4,4.7,75,13.4,3.6,3.3,0.9,0.4,450,334,"三分,无球跑动"],
+["Daniel Gafford","丹尼尔·加福德","DAL","C",4,4.6,55,9.5,6.9,1.1,0.8,1.3,655,0,"护框,吃饼"],
+["Herbert Jones","赫伯特·琼斯","NOP","SF",4,4.6,56,8.9,3.4,2.8,1.6,0.5,383,309,"外线防守,抢断"],
+["Kelly Oubre Jr.","小凯利·乌布雷","IND","SF",4,4.6,50,14.1,5.0,1.6,1.4,0.5,467,360,"突破,外线防守"],
+["Nikola Vucevic","尼古拉·武切维奇","ORL","C",4,4.6,64,15.1,8.4,3.3,0.6,0.6,493,369,"空间型内线,篮板,三分"],
+["Rui Hachimura","八村塁","LAC","PF",4,4.6,68,11.5,3.3,0.8,0.6,0.3,514,443,"三分,内线终结"],
+["Russell Westbrook","拉塞尔·威斯布鲁克","SAC","PG",4,4.6,64,15.2,5.4,6.7,1.3,0.2,427,338,"组织核心,转换,老将"],
+["Sam Merrill","萨姆·梅里尔","CLE","SG",4,4.6,52,12.8,2.6,2.4,0.6,0.1,461,421,"三分,无球跑动"],
+["Day'Ron Sharpe","戴龙·夏普","BKN","C",4,4.5,62,8.7,6.7,2.3,1.1,0.4,601,231,"篮板,内线终结"],
+["Derrick Jones Jr.","小德里克·琼斯","LAC","SG",4,4.5,50,10.1,3.5,1.4,0.9,1.0,499,359,"外线防守,空接"],
+["Kyshawn George","基肖恩·乔治","WAS","SG",4,4.5,48,14.8,5.1,4.5,1.0,0.9,438,381,"三分,外线防守"],
+["Robert Williams III","罗伯特·威廉姆斯三世","POR","C",4,4.5,59,6.7,7.0,1.0,0.6,1.5,708,391,"护框,吃饼"],
+["Tim Hardaway Jr.","小蒂姆·哈达威","MIA","SG",4,4.5,80,13.5,2.6,1.4,0.5,0.1,447,407,"三分,无球跑动,老将"],
+["Isaiah Joe","以赛亚·乔","DET","SG",4,4.4,71,11.1,2.5,1.3,0.7,0.2,455,423,"三分,无球跑动"],
+["Jaime Jaquez Jr.","小海梅·哈克斯","MIL","SF",4,4.4,75,15.4,5.0,4.7,0.7,0.3,507,317,"突破,内线终结,组织核心"],
+["Obi Toppin","奥比·托平","IND","PF",4,4.4,24,11.6,4.4,2.3,0.5,0.0,503,352,"内线终结,三分,空接"],
+["Sam Hauser","萨姆·豪瑟","BOS","SF",4,4.4,78,9.2,3.8,1.5,0.5,0.3,419,393,"三分,无球跑动"],
+["Collin Sexton","科林·塞克斯顿","LAL","SG",4,4.3,68,15.4,2.3,3.3,1.1,0.1,485,401,"突破,快攻,三分"],
+["Egor Demin","叶戈尔·杰明","BKN","SG",4,4.3,35,10.4,3.1,3.5,0.9,0.3,404,395,"组织核心,三分"],
+["Jusuf Nurkic","尤素福·努尔基奇","UTA","C",4,4.3,41,10.9,10.4,4.8,1.3,0.5,503,352,"篮板,策应,低位"],
+["T.J. McConnell","TJ·麦康奈尔","IND","PG",4,4.3,56,9.4,2.2,5.1,1.0,0.2,538,320,"组织核心"],
+["Bruce Brown","布鲁斯·布朗","DEN","SG",4,4.2,82,7.9,3.9,2.1,1.0,0.2,475,385,"外线防守,无球跑动"],
+["D'Angelo Russell","德安吉洛·拉塞尔","MEM","PG",4,4.2,26,10.2,2.3,4.0,0.5,0.1,405,295,"挡拆,组织核心"],
+["Jaylin Williams","杰林·威廉姆斯","OKC","C",4,4.2,65,7.2,5.5,2.4,0.5,0.6,423,383,"三分,篮板"],
+["Kris Dunn","克里斯·邓恩","LAC","PG",4,4.2,82,7.3,3.3,3.6,1.6,0.2,476,374,"外线防守,组织核心"],
+["Kyle Kuzma","凯尔·库兹马","MIL","PF",4,4.2,69,13.0,4.5,2.7,0.7,0.4,492,347,"无球跑动,篮板"],
+["Pelle Larsson","佩莱·拉尔森","MIA","SG",4,4.2,70,11.4,3.5,3.4,0.7,0.2,496,323,"外线防守,无球跑动"],
+["Al Horford","阿尔·霍福德","GSW","C",4,4.1,45,8.3,4.9,2.6,0.7,1.1,426,361,"空间型内线,护框,老将"],
+["Bennedict Mathurin","本内迪克特·马图林","NOP","SF",4,4.1,54,17.6,5.4,2.4,0.8,0.2,430,315,"突破,内线终结"],
+["Bobby Portis","博比·波蒂斯","MIA","PF",4,4.1,67,13.7,6.4,1.6,0.6,0.2,488,456,"三分,篮板,空间型内线"],
+["Jalen Smith","杰伦·史密斯","CHI","C",4,4.1,53,10.2,6.7,1.2,0.5,0.8,483,373,"空间型内线,篮板"],
+["Klay Thompson","克莱·汤普森","MIA","SG",4,4.1,69,11.7,2.1,1.4,0.5,0.3,393,383,"三分,无球跑动,老将"],
+["Luguentz Dort","吕冈茨·多尔特","ATL","SF",4,4.1,69,8.3,3.6,1.2,0.9,0.4,385,344,"外线防守,三分"],
+["Luke Kornet","卢克·科内特","SAS","C",4,4.1,68,6.5,6.1,1.9,0.5,1.0,643,0,"护框,吃饼"],
+["Max Christie","马克斯·克里斯蒂","DAL","SG",4,4.1,77,12.3,3.2,2.0,0.6,0.4,441,404,"三分,无球跑动"],
+["Royce O'Neale","罗伊斯·奥尼尔","CHA","SF",4,4.1,78,9.8,4.8,2.7,1.1,0.4,421,408,"三分,外线防守"],
+["A.J. Green","AJ·格林","MIL","SG",4,4.0,78,10.4,2.7,1.9,0.5,0.1,424,419,"三分,无球跑动"],
+["GG Jackson","GG·杰克逊","MEM","PF",4,4.0,55,12.5,4.3,1.5,0.6,0.8,496,332,"单打,突破"],
+["Harrison Barnes","哈里森·巴恩斯","SAS","SF",4,4.0,77,9.9,2.8,1.9,0.6,0.2,456,388,"三分,老将"],
+["Isaiah Stewart","以赛亚·斯图尔特","MEM","C",4,4.0,58,10.0,5.0,1.1,0.3,1.6,550,333,"护框,篮板"],
+["Luke Kennard","卢克·肯纳德","PHO","SG",4,4.0,78,8.4,2.3,2.2,0.7,0.1,533,478,"三分,无球跑动"],
+["Shaedon Sharpe","谢登·夏普","POR","SG",4,4.0,50,20.8,4.3,2.6,1.4,0.1,452,337,"突破,单打"],
+["Aaron Wiggins","阿隆·维金斯","ATL","SG",3,3.9,65,9.4,3.1,1.7,0.9,0.4,431,356,"三分,无球跑动"],
+["Bilal Coulibaly","比拉尔·库利巴利","WAS","SG",3,3.9,56,11.7,4.3,2.6,1.3,1.0,425,319,"外线防守,换防"],
+["Brook Lopez","布鲁克·洛佩兹","LAC","C",3,3.9,75,8.5,3.6,1.3,0.6,1.2,428,360,"护框,空间型内线,三分"],
+["De'Andre Hunter","德安德烈·亨特","SAC","SF",3,3.9,45,13.7,4.1,2.0,0.7,0.1,415,305,"三分,外线防守"],
+["Jock Landale","乔克·兰代尔","ATL","C",3,3.9,68,10.6,5.7,1.7,0.5,0.5,515,383,"篮板,吃饼"],
+["Derik Queen","德里克·奎因","NOP","C",3,3.8,81,11.7,7.1,3.7,1.0,0.9,473,261,"篮板,内线终结,策应"],
+["Jonas Valanciunas","约纳斯·瓦兰丘纳斯","DEN","C",3,3.8,65,8.7,5.1,1.2,0.2,0.6,582,308,"篮板,内线终结"],
+["Kyle Filipowski","凯尔·菲利波夫斯基","UTA","PF",3,3.8,77,11.4,7.2,2.6,0.9,0.5,492,325,"篮板,空间型内线"],
+["Precious Achiuwa","普雷舍斯·阿丘瓦","SAC","PF",3,3.8,73,10.1,6.7,1.4,0.9,0.7,528,278,"篮板,内线终结"],
+["Scoot Henderson","斯库特·亨德森","POR","PG",3,3.8,30,14.2,2.7,3.7,0.9,0.3,418,352,"突破,快攻,组织核心"],
+["Steven Adams","史蒂文·亚当斯","HOU","C",3,3.8,32,5.8,8.6,1.5,0.7,0.6,504,0,"篮板,护框"],
+["Kevin Huerter","凯文·赫尔特","DET","SG",3,3.7,69,10.0,3.5,2.6,0.9,0.5,451,308,"三分,无球跑动"],
+["Ace Bailey","艾斯·贝利","UTA","SF",3,3.6,72,13.8,4.2,1.8,0.8,0.7,443,344,"三分,单打"],
+["Gary Payton II","加里·佩顿二世","GSW","SG",3,3.6,73,7.5,3.6,1.7,0.9,0.3,583,291,"外线防守,空接"],
+["Jay Huff","杰伊·哈夫","IND","C",3,3.6,82,9.5,4.0,1.5,0.5,1.9,476,319,"护框,空间型内线"],
+["Noah Clowney","诺亚·克劳尼","BKN","PF",3,3.6,66,12.3,4.1,1.6,0.8,0.7,396,329,"三分,护框"],
+["Ryan Kalkbrenner","莱恩·卡尔克布伦纳","CHA","C",3,3.6,69,7.6,5.5,0.8,0.5,1.5,753,0,"护框,吃饼"],
+["Bones Hyland","邦斯·海兰德","MIN","PG",3,3.5,71,8.5,1.8,2.6,0.6,0.2,453,388,"快攻,三分"],
+["Dennis Schroder","丹尼斯·施罗德","CHA","PG",3,3.5,70,10.8,2.7,4.9,0.8,0.2,405,329,"挡拆,组织核心,老将"],
+["Jake LaRavia","杰克·拉拉维亚","LAL","SF",3,3.5,82,8.2,4.0,1.8,1.3,0.5,459,321,"外线防守,篮板"],
+["Matisse Thybulle","马蒂斯·塞布尔","POR","SF",3,3.5,30,5.8,2.0,0.9,2.0,0.5,433,398,"抢断,外线防守"],
+["Jamal Shead","贾马尔·谢德","TOR","PG",3,3.4,82,6.6,1.7,5.4,0.9,0.2,367,321,"组织核心,外线防守"],
+["Marvin Bagley III","马文·巴格利三世","DEN","PF",3,3.4,60,10.5,6.1,1.4,0.5,0.7,618,462,"内线终结,篮板"],
+["Kasparas Jakucionis","卡斯帕拉斯·雅库乔尼斯","MIA","PG",3,3.3,53,6.2,2.6,2.6,0.6,0.1,429,423,"组织核心,三分"],
+["Khris Middleton","克里斯·米德尔顿","WAS","SF",3,3.3,63,10.2,3.7,2.8,0.7,0.1,420,360,"中距离,老将"],
+["Maxime Raynaud","马克西姆·雷诺","SAC","C",3,3.3,74,12.5,7.5,1.4,0.5,0.5,571,324,"篮板,内线终结"],
+["Mikel Brown Jr.","米克尔·布朗","BKN","PG",3,3.3,60,13.0,3.4,5.4,0.9,0.2,430,350,"突破,组织核心,新秀"],
+["Jaxson Hayes","贾克森·海斯","UTA","C",3,3.2,66,7.5,4.1,0.9,0.4,0.8,756,1000,"吃饼,内线终结"],
+["Simone Fontecchio","西蒙尼·丰泰基奥","MIA","SF",3,3.2,70,8.5,3.0,1.4,0.5,0.1,412,375,"三分,无球跑动"],
+["Caris LeVert","卡里斯·勒韦尔","DET","SG",3,3.1,60,7.4,2.0,2.7,0.9,0.7,417,333,"无球跑动,突破"],
+["Clint Capela","克林特·卡佩拉","HOU","C",3,3.1,75,3.8,4.6,0.7,0.5,0.8,520,500,"篮板,护框"],
+["Isaac Okoro","艾萨克·奥科罗","CHI","SF",3,3.1,63,9.3,2.7,1.6,0.7,0.5,460,330,"外线防守"],
+["Nikola Jovic","尼古拉·约维奇","MIA","PF",3,3.1,47,7.3,3.3,2.2,0.6,0.4,366,269,"空间型内线,三分"],
+["Zaccharie Risacher","扎卡里·里萨谢","DAL","SF",3,3.1,67,9.6,3.8,1.1,0.9,0.5,455,368,"外线防守,三分"],
+["Andre Drummond","安德烈·德拉蒙德","PHI","C",3,3.0,63,6.4,8.4,1.3,0.6,0.8,472,356,"篮板"],
+["Josh Green","约什·格林","MIN","SG",3,3.0,58,4.3,1.8,0.8,0.6,0.1,459,420,"外线防守"],
+["Terance Mann","特伦斯·曼","BKN","SG",3,3.0,63,7.2,3.2,3.0,0.7,0.2,457,364,"无球跑动,外线防守"],
+["Isaiah Collier","以赛亚·科利尔","UTA","PG",2,2.9,59,11.7,2.5,7.2,1.1,0.3,495,270,"组织核心,突破"],
+["Jonathan Isaac","乔纳森·艾萨克","ORL","PF",2,2.9,52,2.6,2.5,0.4,0.4,0.6,422,184,"护框,换防"],
+["Kevin Love","凯文·乐福","UTA","PF",2,2.9,37,6.7,5.8,1.8,0.4,0.2,397,373,"三分,篮板,老将"],
+["Nicolas Batum","尼古拉斯·巴图姆","LAC","SF",2,2.9,74,4.0,2.5,0.9,0.6,0.3,403,404,"三分,老将"],
+["Ben Sheppard","本·谢泼德","IND","SG",2,2.8,65,7.1,3.0,1.8,0.6,0.1,434,362,"三分,无球跑动"],
+["Jarace Walker","贾雷斯·沃克","IND","PF",2,2.8,76,11.6,5.1,2.5,0.8,0.3,419,374,"换防,篮板"],
+["Kelly Olynyk","凯利·奥利尼克","SAS","C",2,2.8,42,3.2,1.8,1.2,0.4,0.1,490,255,"空间型内线,老将"],
+["Mike Conley","迈克·康利","BOS","PG",2,2.8,54,4.5,1.7,2.9,0.6,0.3,335,337,"组织核心,老将"],
+["Jarred Vanderbilt","贾里德·范德比尔特","LAL","PF",2,2.6,65,4.4,4.5,1.3,0.8,0.3,471,293,"篮板,外线防守"],
+["Kevon Looney","凯文·卢尼","NOP","C",2,2.4,21,2.8,5.6,1.6,0.4,0.5,417,154,"篮板,护框"],
+["Will Riley","威尔·莱利","WAS","SF",2,2.1,74,10.3,2.9,2.0,0.7,0.1,439,316,"三分,无球跑动"],
+["Pat Connaughton","帕特·康诺顿","CHA","SG",1,1.8,42,2.6,1.5,0.4,0.3,0.0,447,404,"三分"],
+["Jordan McLaughlin","乔丹·麦克劳林","SAS","PG",1,1.7,44,2.0,0.7,0.9,0.5,0.0,418,425,"外线防守"],
+["Anthony Gill","安东尼·吉尔","WAS","PF",1,1.6,55,5.8,2.9,1.3,0.6,0.4,628,354,"内线终结"],
+["Chaz Lanier","查兹·拉尼尔","DET","SG",1,1.6,34,2.4,0.7,0.5,0.2,0.0,315,284,"三分"],
+["Jae'Sean Tate","贾肖恩·泰特","HOU","PF",1,1.6,46,2.8,1.6,0.5,0.2,0.1,514,313,"篮板"],
+["Bronny James","布朗尼·詹姆斯","LAL","PG",1,1.3,42,2.9,0.5,1.2,0.5,0.1,409,386,"外线防守"],
+["Cam Christie","卡姆·克里斯蒂","LAC","SG",1,1.3,55,2.8,1.4,0.6,0.3,0.1,381,245,"三分"]
+];
+/* ================= 推演引擎 ================= */
+const POS = ["PG","SG","SF","PF","C"];
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const has=(p,t)=>p.tags.indexOf(t)>=0;
+const POSN = {PG:"控卫",SG:"分卫",SF:"小前",PF:"大前",C:"中锋"};
+
+const PLAYERS = RAW.map((r,i)=>({
+  i:i, en:r[0], cn:r[1], team:r[2], pos:r[3], tier:r[4], score:r[5], gp:r[6],
+  ppg:r[7], rpg:r[8], apg:r[9], spg:r[10], bpg:r[11],
+  fg:r[12]/1000, tp:r[13]/1000, tpm:r[13],
+  tags:(r[14]||"").split(",").filter(Boolean),
+  price:TIERS[r[4]].p
+}));
+const TN = t => TIERS[t].n;          // 档位名称
+/* 队名简称 —— 模型经常只写"掘金""湖人"这种简称，纠错时要认得出来 */
+const TEAM_SHORT={
+  ATL:"老鹰", BOS:"凯尔特人", BKN:"篮网", CHA:"黄蜂", CHI:"公牛", CLE:"骑士", DAL:"独行侠", DEN:"掘金",
+  DET:"活塞", GSW:"勇士", HOU:"火箭", IND:"步行者", LAC:"快船", LAL:"湖人", MEM:"灰熊", MIA:"热火",
+  MIL:"雄鹿", MIN:"森林狼", NOP:"鹈鹕", NYK:"尼克斯", OKC:"雷霆", ORL:"魔术", PHI:"76人", PHO:"太阳",
+  POR:"开拓者", SAC:"国王", SAS:"马刺", TOR:"猛龙", UTA:"爵士", WAS:"奇才"
+};
+/* 这两个属性不给玩家看，只用来排角色和算化学反应的 */
+
+/* --- 各维度原始打分 --- */
+function dSpacing(p){
+  let x = clamp((p.tpm-250)/1.7, 0, 100);
+  if(has(p,"三分")) x=Math.min(100,x+10);
+  if(has(p,"无球跑动")) x=Math.min(100,x+5);
+  if(has(p,"无空间")) x=Math.max(0,x-20);
+  return x;
+}
+function dRim(p){
+  let x = clamp((p.bpg-0.3)*42, 0, 68);
+  x += p.pos==="C"?18 : p.pos==="PF"?10 : p.pos==="SF"?4 : 0;
+  if(has(p,"护框")) x+=20;
+  if(has(p,"体型优势")) x+=8;
+  return clamp(x,0,100);
+}
+function dPerimeter(p){
+  let x = clamp((p.spg-0.6)*42, 0, 62);
+  if(has(p,"外线防守")) x+=24;
+  if(has(p,"换防")) x+=12;
+  if(has(p,"抢断")) x+=8;
+  if(p.pos==="PG"||p.pos==="SG"||p.pos==="SF") x+=6;
+  if(has(p,"小个子")) x-=6;
+  return clamp(x,0,100);
+}
+function dRebound(p){
+  let x = clamp((p.rpg-2.5)*8.5, 0, 72);
+  if(p.pos==="C") x+=12; else if(p.pos==="PF") x+=7;
+  if(has(p,"篮板")) x+=10;
+  return clamp(x,0,100);
+}
+function dPlay(p){
+  let x = clamp((p.apg-1.5)*11, 0, 72);
+  if(has(p,"组织核心")) x+=20;
+  if(has(p,"策应")) x+=14;
+  if(has(p,"持球大核")) x+=10;
+  return clamp(x,0,100);
+}
+function dCreate(p){
+  let x = clamp((p.ppg-8)*4.6, 0, 100);
+  if(has(p,"持球大核")) x+=16;
+  if(has(p,"单打")) x+=12;
+  if(has(p,"关键球")) x+=10;
+  if(has(p,"低位")) x+=8;
+  if(has(p,"造犯规")) x+=5;
+  return clamp(x,0,100);
+}
+function dInterior(p){
+  let x = clamp((p.fg*1000-400)/2.2, 0, 100);
+  x *= (p.pos==="C"||p.pos==="PF")?1.05:0.78;
+  if(has(p,"内线终结")) x+=16;
+  if(has(p,"吃饼")) x+=12;
+  if(has(p,"空接")) x+=8;
+  if(has(p,"低位")) x+=10;
+  return clamp(x,0,100);
+}
+function dPace(p){
+  let x = 50;
+  if(has(p,"转换")) x+=22;
+  if(has(p,"快攻")) x+=20;
+  if(has(p,"慢节奏")) x-=22;
+  if(has(p,"挡拆")) x+=6;
+  if(p.pos==="C") x-=8; else if(p.pos==="PF") x-=4;
+  if(has(p,"老将")) x-=5;
+  return clamp(x,0,100);
+}
+function dHealth(p){
+  let x = p.gp>=72?100 : p.gp>=62?86 : p.gp>=52?74 : p.gp>=42?60 : p.gp>=28?44 : p.gp>=14?30 : 14;
+  if(has(p,"伤病隐患")) x-=12;
+  if(has(p,"重伤初愈")) x=Math.min(x,20);
+  return clamp(x,0,100);
+}
+/* ================= 角色分层 =================
+   五个人不是五个"能力块"捏在一起。真实比赛里一定会打战术，
+   打战术就意味着球权集中在两三个人手里，剩下的人要干脏活：
+   蹲底角、做掩护、卡位、补防、冲抢。
+
+   关键：一个习惯有球的球星，被排到第四、第五选择去干脏活时，
+   他在这件事上的产出，很可能还不如一个专职 3D —— 因为他本来就不干这个。
+   所以要先算出每个人的"球权需求"和"无球价值"，再把他们排成 1~5 号选择。 */
+
+/* 球权需求：这个人必须有球在手才能发挥（越高越是"要球的"） */
+function dUsage(p){
+  let x = dCreate(p)*0.52 + dPlay(p)*0.28;
+  if(has(p,"持球大核")) x+=16;
+  if(has(p,"单打"))     x+=12;
+  if(has(p,"组织核心")) x+=10;
+  if(has(p,"低位"))     x+=10;
+  if(has(p,"突破"))     x+=8;
+  if(has(p,"造犯规"))   x+=6;
+  if(has(p,"关键球"))   x+=5;
+  if(has(p,"吃饼"))     x-=16;
+  if(has(p,"无球跑动")) x-=10;
+  if(has(p,"空间型内线")) x-=8;
+  if(has(p,"护框"))     x-=6;
+  if(has(p,"三分"))     x-=4;
+  return clamp(x,0,100);
+}
+/* 无球价值：不拿球也能帮到球队的部分 —— 底角三分、掩护、卡位、补防、冲抢 */
+function dGlue(p){
+  /* 脏活分两条路子，位置不同、干法不同：
+     后卫是接球就投、无球跑位、盯人；内线是掩护、卡位、护框、冲抢。
+     两条路各算一遍取高的那个，否则会让后卫在"篮板护框"上白挨一刀。 */
+  const guardSide = dSpacing(p)*0.44 + dPerimeter(p)*0.40 + dInterior(p)*0.16;
+  const bigSide   = dRebound(p)*0.34 + dRim(p)*0.34 + dInterior(p)*0.16 + dSpacing(p)*0.16;
+  let x = (guardSide+bigSide)/2*0.35 + Math.max(guardSide,bigSide)*0.65;
+  if(has(p,"无球跑动")) x+=16;
+  if(has(p,"引力"))     x+=26;   /* 无球牵制力 —— 数据里明确标注了，引擎以前白白浪费了这个标签 */
+  if(has(p,"挡拆"))     x+=10;
+  if(has(p,"篮板"))     x+=9;
+  if(has(p,"护框"))     x+=9;
+  if(has(p,"吃饼"))     x+=9;
+  if(has(p,"换防"))     x+=10;
+  if(has(p,"空间型内线")) x+=8;
+  if(has(p,"抢断"))     x+=10;
+  if(has(p,"外线防守")) x+=6;    /* 防守型工兵的价值不该被抢断数据埋没 */
+  if(has(p,"持球大核")) x-=9;
+  if(has(p,"单打"))     x-=7;
+  return clamp(x,0,100);
+}
+
+const ROLE_NAME=["主攻点","副攻点","第三点","功能位","蓝领位"];
+/* 每个角色位对各项能力的重要程度。这就是现代篮球的分工：
+   前两位要能持球自己解决问题；后两位要能干脏活（掩护、卡位、底角三分、补防）。
+   注意 create 这一行：一号位 2.2，五号位只有 0.15 —— 单打能力放在蓝领位上几乎不值钱。 */
+const ROLE_W={
+  create:  [2.20, 1.70, 0.85, 0.30, 0.15],
+  play:    [1.90, 1.20, 1.00, 0.75, 0.65],
+  spacing: [1.00, 1.00, 1.15, 1.35, 1.45],
+  rebound: [0.55, 0.70, 1.00, 1.45, 1.75],
+  rim:     [0.35, 0.55, 1.00, 1.55, 1.85],
+  perim:   [1.25, 1.30, 1.15, 0.95, 0.80],
+  interior:[0.80, 0.90, 1.10, 1.20, 1.30],
+  pace:    [1.30, 1.20, 1.00, 0.85, 0.75],
+  health:  [1.00, 1.00, 1.00, 1.00, 1.00]
+};
+function roleMean(vals, weights){
+  let num=0, den=0;
+  for(let i=0;i<vals.length;i++){ const w=(weights&&weights[i])||1; num+=vals[i]*w; den+=w; }
+  return den? num/den : 0;
+}
+/* 按球权需求从高到低，排出 1~5 号选择 */
+function assignRoles(L){
+  return L.slice().sort((a,b)=> b.usg-a.usg)
+          .map((p,i)=>({ p:p, role:i+1, name:ROLE_NAME[i], usg:Math.round(p.usg), glue:Math.round(p.glue) }));
+}
+PLAYERS.forEach(function(p){ p.usg=dUsage(p); p.glue=dGlue(p); });
+
+const DIMS=[
+  {k:"spacing", n:"空间拉开", w:1.15, f:dSpacing},
+  {k:"create",  n:"持球硬解", w:1.20, f:dCreate},
+  {k:"interior",n:"内线终结", w:0.95, f:dInterior},
+  {k:"rim",     n:"护框",     w:1.10, f:dRim},
+  {k:"perim",   n:"外线防守", w:1.10, f:dPerimeter},
+  {k:"rebound", n:"篮板",     w:0.90, f:dRebound},
+  {k:"play",    n:"组织串联", w:1.00, f:dPlay},
+  {k:"pace",    n:"转换节奏", w:0.70, f:dPace},
+  {k:"health",  n:"健康续航", w:0.85, f:dHealth}
+];
+/* 有"老大属性"的维度更看重最高点，靠整体堆的维度更看重均值 */
+const BLEND={spacing:.42, create:.60, rim:.55, perim:.52, rebound:.32, play:.18, interior:.40, pace:.20, health:.15};
+function blendD(vals, wMax, roleW){
+  const s=vals.slice().sort((a,b)=>b-a);
+  const mean=roleMean(vals, roleW);      /* 按角色位加权，而不是简单平均 */
+  return mean*(1-wMax)+s[0]*wMax;
+}
+
+/* --- 阵容画像 ---
+   只做「事实描述」：九个观察维度的数值、角色分工、总身价、评分合计、阵容构成。
+   这里【不产出任何胜负判定、评分或结论】—— 判断交给大模型。 */
+function profile(lineup){
+  const d={};
+  const roles=assignRoles(lineup);
+  const ordered=roles.map(r=>r.p);
+  DIMS.forEach(dim=>{
+    d[dim.k]=blendD(ordered.map(dim.f), BLEND[dim.k], ROLE_W[dim.k]);
+  });
+  const sumAp=lineup.reduce((a,p)=>a+p.apg,0);
+  d.play=clamp(d.play*0.45 + clamp(sumAp*3.0,0,100)*0.55, 0, 100);
+  const sumRb=lineup.reduce((a,p)=>a+p.rpg,0);
+  d.rebound=clamp(d.rebound*0.5 + clamp((sumRb-16)*3.4,0,100)*0.5, 0, 100);
+  return {
+    dim:d, roles,
+    price: lineup.reduce((a,p)=>a+p.price,0),
+    talent: lineup.reduce((a,p)=>a+p.score,0),
+    fact: lineupFact(lineup, roles)
+  };
+}
+
+/* 阵容构成的客观事实（都不含评价） */
+function lineupFact(L, roles){
+  return {
+    shooters: L.filter(p=>p.tpm>=250).length,          /* 有稳定三分出手的人数 */
+    bigs:     L.filter(p=>p.pos==="C"||p.pos==="PF").length,
+    needBall: roles.filter(r=>r.usg>=70).length,        /* 需要球在手的人 */
+    topTier:  L.filter(p=>p.tier>=10).length,
+    lead:     roles[0].p.cn,
+    leadUsg:  roles[0].usg
+  };
+}
+
+/* --- 对阵 ---
+   只输出「两边在九个维度上各是多少」。
+   这里【不做任何胜负判定】：不比分、不算 margin、不判谁赢。
+   九维数值只是给大模型的一组「观察角度建议」，不是结论，模型可以推翻。 */
+function matchup(A,B){
+  const pa=profile(A), pb=profile(B);
+  const edges=DIMS.map(function(dim){
+    const a=pa.dim[dim.k], b=pb.dim[dim.k];
+    return {k:dim.k, n:dim.n, a:a, b:b, diff:a-b};
+  });
+  return {pa:pa, pb:pb, edges:edges};
+}
+
+/* --- 组队辅助 --- */
+function lineupPrice(L){return L.reduce((a,p)=>a+p.price,0);}
+function rosterScore(L){return L.reduce((a,p)=>a+p.score,0);}
+function canAdd(L,p){
+  if(!p) return {ok:false,why:""};
+  if(L.length>=5) return {ok:false,why:"阵容已满"};
+  if(L.some(x=>x.i===p.i)) return {ok:false,why:"已在这套阵容里"};
+  if(L.some(x=>x.pos===p.pos)) return {ok:false,why:`已经有${POSN[p.pos]}了`};
+  if(lineupPrice(L)+p.price>CAP) return {ok:false,why:`工资帽不够（还差 ${lineupPrice(L)+p.price-CAP}）`};
+  return {ok:true,why:""};
+}
+function teamBestFive(code){
+  const pool=PLAYERS.filter(p=>p.team===code);
+  const out=[]; const used={};
+  POS.forEach(pos=>{
+    const cand=pool.filter(p=>p.pos===pos&&!used[p.i]).sort((a,b)=>b.price-a.price||b.ppg-a.ppg)[0];
+    if(cand){out.push(cand);used[cand.i]=1;}
+  });
+  if(out.length<5){
+    pool.filter(p=>!used[p.i]).sort((a,b)=>b.price-a.price).forEach(p=>{
+      if(out.length<5){out.push(p);used[p.i]=1;}
+    });
+  }
+  return out.slice(0,5);
+}
+function randomLineup(){
+  for(let t=0;t<400;t++){
+    const L=[];
+    POS.forEach(pos=>{
+      const cands=PLAYERS.filter(p=>p.pos===pos&&canAdd(L,p).ok);
+      if(cands.length){
+        const w=cands.filter(p=>lineupPrice(L)+p.price<=CAP);
+        if(w.length) L.push(w[Math.floor(Math.random()*w.length)]);
+      }
+    });
+    if(L.length===5) return L;
+  }
+  return [];
+}
+function rosterReady(L){return L.length===5 && lineupPrice(L)<=CAP;}
+/* ================= 大模型对接 ================= */
+
+/* 内置的免费 Key（智谱）。免费模式默认开启，只会调用下面白名单里的免费模型，调不到付费模型。
+   ⚠️ 要把这个 HTML 发给别人之前，把下面这一行引号里清空（改成 ""）再发。 */
+const BUILTIN_KEY="66b7303e687a42e9846fa2eb3edb44bb.CPOmH6DEdjdX9Mfw";
+
+const CFG_KEY="nba-duel-llm-cfg";
+/* 配置版本号：改了默认模型/Key 就往上加一位。
+   浏览器按「域」存 localStorage，所有本地 HTML 共用一个域 —— 旧版本存下的配置会盖掉新的默认值，
+   表现就是"明明内置了免费模型，却一直连不上"。加版本号可以让旧配置自动作废。 */
+const CFG_VER=3;   /* 改了默认模型/新增开关都要 +1，让旧配置自动作废 */
+const DEF_CFG={base:"https://open.bigmodel.cn/api/paas/v4", model:"glm-4-flash", key:BUILTIN_KEY, freeOnly:true, modelBox:true};
+function loadCfg(){
+  try{
+    const raw=JSON.parse(localStorage.getItem(CFG_KEY)||"{}");
+    if(raw && raw.v===CFG_VER) return Object.assign({},DEF_CFG,raw);
+  }catch(e){}
+  return Object.assign({},DEF_CFG);
+}
+function saveCfg(c){ try{ localStorage.setItem(CFG_KEY,JSON.stringify(Object.assign({v:CFG_VER},c))); }catch(e){} }
+function cfgReady(){ const c=loadCfg(); return !!(c.key&&c.base&&c.model); }
+
+/* ---------- 免费模型白名单 ----------
+   免费模式下只允许调这些。判断依据是「厂商官方文档明确标注免费」或「跑在自己电脑上」，
+   不是"便宜"。名单外的模型一律拦住 —— 拦错的方向是安全，放过的方向是要花钱的。 */
+const FREE_MODELS=[
+  "glm-4-flash",            /* 智谱 · 官方标注免费，实测可用 */
+  "glm-4-flash-250414",     /* 智谱 · 官方标注免费 */
+  "glm-4.7-flash",          /* 智谱 · 官方标注免费（免费额度限流很紧） */
+  "glm-4.5-flash",          /* 智谱 · 免费（官方说即将下线） */
+  "Qwen/Qwen2.5-7B-Instruct",
+  "Qwen/Qwen3-8B",
+  "THUDM/glm-4-9b-chat",
+  "deepseek-ai/DeepSeek-R1-0528-Qwen3-8B",
+  "qwen3:8b", "qwen2.5:7b", "glm4:9b", "llama3.1:8b"   /* 本地 Ollama */
+];
+function isFreeModel(model, base){
+  /* 跑在本机上的模型，天然不花钱 */
+  if(/^https?:\/\/(localhost|127\.0\.0\.1|0\.0\.0\.0)/i.test(String(base||""))) return true;
+  return FREE_MODELS.indexOf(model)>=0;
+}
+
+/* 各家接口能否被网页直接调用 —— 这张表是实测出来的（无头 Chrome 从 file:// 发起预检请求） */
+const PRESETS=[
+  {n:"智谱 GLM-4-Flash", tag:"免费·实测可用", free:1, cors:1,
+   base:"https://open.bigmodel.cn/api/paas/v4", model:"glm-4-flash",
+   note:"智谱官方标注的免费模型。已经用你这个 Key 实测过：能通、能出结果。默认就用它。"},
+  {n:"智谱 GLM-4.7-Flash", tag:"免费·容易限流", free:1, cors:1,
+   base:"https://open.bigmodel.cn/api/paas/v4", model:"glm-4.7-flash",
+   note:"更新更强，同样是官方免费模型，但免费额度限流很紧 —— 实测这个 Key 调它经常直接返回「已达到速率限制」。被限流就切回 GLM-4-Flash。"},
+  {n:"硅基流动", tag:"9B 以下免费", free:1, cors:1,
+   base:"https://api.siliconflow.cn/v1", model:"Qwen/Qwen2.5-7B-Instruct",
+   note:"9B 以下的小模型永久免费。模型名要写「厂牌/模型」的完整形式，去它的模型广场挑标着「免费」的。需要另配一个 Key。"},
+  {n:"本地 Ollama", tag:"完全离线", free:1, cors:1,
+   base:"http://localhost:11434/v1", model:"qwen3:8b",
+   note:"完全免费、不联网、不用注册，跑在自己电脑上。要先装好 Ollama 并下载一个模型，Key 随便填一个字母。"},
+  {n:"通义 / DeepSeek / Kimi", tag:"付费·已禁用", free:0, cors:1, paid:1,
+   base:"", model:"",
+   note:"这些按量付费。你要求只用免费模型，所以在免费模式下它们是锁住的。要用就先在下面把「只允许免费模型」关掉。"},
+  {n:"火山豆包 / 混元 / 星火", tag:"付费+会被拦", free:0, cors:0, paid:1,
+   base:"", model:"",
+   note:"这些按量付费；而且它们的接口不允许网页直接调用（跨域会被浏览器拦掉，报错看起来像「网络不好」）。就算关掉免费模式也用不了，得挂本地代理。"}
+];
+
+/* 球员卡片：只留判断阵容必需的信息（位置 / 档次 / 评级 / 球队），一行一个。
+   详细数据只给关键球员 —— 给太多反而会淹没重点。 */
+function card(p){
+  /* 故意不给球员的球队名 —— 实测模型会因为阵容里有个湖人球员，就把整套阵容叫成"湖人"。
+     分析关心的是球员类型和搭配，球队归属没有用，反而是个干扰源。 */
+  return `· ${p.cn}｜${POSN[p.pos]}｜${TN(p.tier)}（评级 ${p.score}）｜场均 ${p.ppg} 分 ${p.rpg} 板 ${p.apg} 助`;
+}
+/* 关键球员的详细数据：按评级取前 3 个，其余只给一个场均得分。
+   数据只给关键的几个人，给太多会淹没重点。 */
+function keyData(L){
+  const sorted=L.slice().sort(function(a,b){ return b.score-a.score; });
+  const key=sorted.slice(0,3), rest=sorted.slice(3);
+  let out=key.map(function(p){
+    const tp = p.tpm? ((p.tp*100).toFixed(1)+"%") : "基本不出手";
+    return `· ${p.cn}：投篮 ${(p.fg*100).toFixed(1)}% · 三分 ${tp} · 技术特点：${p.tags.join("、")||"无"}`;
+  }).join("\n");
+  if(rest.length) out += "\n· 其余球员： " + rest.map(function(p){ return p.cn+" "+p.ppg+"分"; }).join(" / ");
+  return out;
+}
+/* 如果五个人都来自同一支球队，就把队名说清楚；
+   否则明确告诉模型"这五个人来自不同球队" ——
+   实测模型会因为阵容里有一个湖人球员，就把整套阵容叫成"湖人"。 */
+function teamLabel(L){
+  const cnt={};
+  L.forEach(function(p){ cnt[p.team]=(cnt[p.team]||0)+1; });
+  const ks=Object.keys(cnt);
+  return ks.length===1? TEAMS[ks[0]] : null;
+}
+/* 球权需求排序（按平时持球的多少排）—— 只作参考，帮模型判断风格能不能互补 */
+function usageText(pr){
+  return pr.roles.map(function(r){ return r.p.cn+"("+r.usg+")"; }).join(" > ");
+}
+/* 只给九维数值本身，不给任何"结论"式的描述 —— 引擎的结论不可靠，
+   把它当结论会误导大模型；给原始数值，让它自己解读。 */
+function profileText(pr){
+  const order=["create","spacing","interior","rim","perim","rebound","play","pace","health"];
+  const nm={create:"持球硬解",spacing:"空间拉开",interior:"内线终结",rim:"护框",perim:"外线防守",rebound:"篮板",play:"组织串联",pace:"转换节奏",health:"健康续航"};
+  return order.map(k=>`${nm[k]} ${Math.round(pr.dim[k])}`).join(" | ");
+}
+
+function buildPrompt(A,B,m){
+  const system =
+`你是一位资深的现代篮球专家。你要判断两套首发阵容 —— 把它们各自当成一支球队 —— 打满 48 分钟会是什么结果，以及为什么会是这个结果。
+
+【你的材料】
+· 「球员真实数据」是客观事实，必须遵守，不要编造。
+· 「参考维度」「球权需求」是用固定公式从球员数据算出来的粗略数字。
+  它们只是提醒你可以从哪些角度去看，【不是评分，也不是谁强谁弱的结论】。
+  如果你从球员类型和风格上看出了不同的东西，以你的判断为准，不要被这些数字绑住。
+
+【最重要的原则：不要用机械规则判断适配性】
+· 不要因为"队里有好几个场均 20+ 的球员"就断定球权不够分。得分高 ≠ 要球。
+  库里场均 26 分，但他大部分出手是无球跑出来的。要看球员类型，不要数人头。
+· 不要因为"外线投手多、空间拉得开"就认为篮下空虚。空间拉得开本身是好事；
+  而且队里可能同时有低位威胁点 —— 既能拉开空间、又能低位一打一，那恰恰是最理想的组合。
+· 判断适配性看的是【球员风格能不能互补】，不是套用任何公式。
+
+【判断球员类型时看什么】
+· 他是有球型还是无球型？吃不吃球权？能不能投、能不能防、能不能换防？
+  两个"必须球在手"的人放在一起才是冲突；一个要球、一个吃饼或接球就投，那是互补。
+· 有些价值不在数据里：无球牵制力、防守威慑、掩护质量、卡位、跑位、换防弹性。
+· 角色球员的脏活水平不是统一的：有的比数据体现的更好，有的反而更差，不要一刀切。
+· 同一个球员在不同队友身边价值不一样。身边有传球手，无球型球员的价值会被放大；
+  身边全是"要球的人"，他的球权被压缩、价值被浪费。
+
+【只判断胜负，不要给比分】
+真实的比赛还有替补轮换，这里只比较首发五人，所以【不要给出任何具体比分】。
+你只需要判断哪一套更可能赢，把力气全部花在"为什么"上。
+
+【必须按顺序做完这四步分析】
+① 球权与打法：这套阵容摆上场会怎么打？球最终交到谁手上？谁是第二、第三选择？
+   有没有人的价值因为摸不到球而被浪费？（球权排序已经给了，就按给定的来，不要自己重排）
+② 对位：两边分别谁去防谁？哪一组是错位？谁会被反复针对？
+③ 胜负点：各自的强项能不能打到对方的软肋？局面会从哪个环节开始倾斜？
+④ 调整：落后的一方会怎么改 —— 换防、包夹、提速，还是干脆把球交给另一个人？改完之后管用吗？
+
+【其它要求】
+· 用中文，像赛后球评那样说话：具体、敢下判断、不骑墙、不堆形容词。不要"综上所述""值得一提"这类废话。
+· 标点必须全部是英文半角。绝对不要在 JSON 的结构位置使用中文引号“”或中文逗号。
+  特别注意冒号的位置：正确写法是 "d":"内容"，错误写法是 "d:"内容 —— 冒号要在引号外面。
+· 【用了球队名就算写错】。全文一律用「我的阵容」和「对手阵容」来称呼两支球队，
+  绝对不要出现任何 NBA 球队名（掘金、湖人、凯尔特人……都不行），也不要写"A 队""B 队"。
+  这一点很容易犯：因为球员里有某个球队的人，就顺手把整套阵容叫成那支队。务必检查一遍。
+· 只输出 JSON，不要输出任何其它文字、不要用 Markdown 代码块包裹。`;
+
+  const user =
+`请判断下面这两套首发阵容交手的结果，并给出你的分析。
+
+========== 我的阵容${teamLabel(A)? "（"+teamLabel(A)+"的首发）":"（五人来自不同球队）"} ==========
+${A.map(card).join("\n")}
+【关键球员的 25-26 数据】
+${keyData(A)}
+【球权需求排序（越高越需要球在手，仅供参考）】${usageText(m.pa)}
+
+========== 对手阵容${teamLabel(B)? "（"+teamLabel(B)+"的首发）":"（五人来自不同球队）"} ==========
+${B.map(card).join("\n")}
+【关键球员的 25-26 数据】
+${keyData(B)}
+【球权需求排序（越高越需要球在手，仅供参考）】${usageText(m.pb)}
+
+========== 参考维度（只是提示可以看哪些角度，不是结论，可以推翻）==========
+我的阵容九维：${m.pa.dim?profileText(m.pa):""}
+对手阵容九维：${profileText(m.pb)}
+九维差值（我的 − 对手）：${m.edges.map(function(e){ return e.n+" "+(e.a-e.b).toFixed(0); }).join(" | ")}
+
+现在请输出 JSON，严格用下面这个结构：
+{
+  "winner": "A" 或 "B"，谁更可能赢
+  "headline": "一句话结论，16 字以内，直接给观点",
+  "verdict": "130-170 字。必须回答：① 决定胜负的那个特点是什么；② 它为什么在"只比首发五人"的前提下成立。要点名球员。",
+  "styleA": "给我这套阵容的打法起个名（4-8 字，比如「五外拉开」「双塔阵地」）",
+  "styleB": "给对手这套阵容的打法起个名（4-8 字）",
+  "process": [
+    {"s":"球权与打法","d":"100-130 字。必须回答：① 球先到谁手上、谁是第二第三选择；② 这套打法靠什么得分；③ 谁的球权被压缩了、损失了什么"},
+    {"s":"对位","d":"100-130 字。必须回答：① 两边分别谁去防谁；② 哪一组是错位、错在哪里；③ 谁会被反复针对"},
+    {"s":"胜负点","d":"100-130 字。必须回答：① 各自的强项能不能打到对方软肋；② 对手有没有补救手段；③ 局面会从哪个环节开始倾斜"},
+    {"s":"调整","d":"100-130 字。必须回答：① 落后的一方会改什么；② 改完之后哪一环会被牺牲；③ 最终管不管用"}
+  ],
+  "matchups": [
+    {"a":"我方球员名","b":"对方球员名","d":"35 字左右。这组对位谁吃亏、为什么"}
+  ]
+}
+"process" 固定 4 条，s 就用上面这四个词。每一条都要把括号里那三个问题都答到，写不到 100 字说明信息没给够。
+必须具体、必须点名球员、必须给出因果（为什么），不要写"实力更强"这类空话。
+"matchups" 给 3 组最关键的个体对位。
+"winner" 只能是 "A" 或 "B"。一个字段都不能少。
+
+下面这段只示范【格式和篇幅】。内容是我随便编的，但【字数要看齐】——
+写短了就等于没写，玩家看到的是四句话，不是一份分析：
+
+{"winner":"A","headline":"内线被打穿，外线救不回来",
+"verdict":"这组对位从第一节就不公平。塔图姆被顶到四号位之后，既要负责发起又要对抗大体型，第三节开始他的出手质量就明显下滑。对面用双塔把禁区堵死，塔图姆的突破路线被压到中距离，而中距离恰恰是他效率最低的区域。真正拉开分差的是篮板：塔图姆一旦投丢，对面的大个子能直接发动转换，这场球的差距就是这么一点点累积起来的。",
+"styleA":"五外拉开","styleB":"双塔阵地",
+"process":[
+{"s":"球权与打法","d":"球权会高度集中在塔图姆手上，他既要发起又要终结，这个负担本身就超载了。第二选择是怀特，但怀特更习惯借掩护接球投篮，不是那种能自己创造机会的人。普里查德身高吃亏，面筐突破容易被顶开。这套打法靠塔图姆把防守吸过来再分球，问题是一旦他的第一步被限制，全队就找不到第二个能破局的人，回合会变成勉强出手。"},
+{"s":"对位","d":"最明显的错位在四号位：对面用两米一的大个子去对塔图姆，塔图姆的背身和面筐都会很难受。怀特那边相对稳，但他的对位人绕掩护经验很足，接球投篮的节奏会被打乱。真正会被反复针对的是普里查德，对面只要让锋线去背身单吃他，几乎每个回合都能拿到分或者造到犯规，这会让防守阵型被迫收缩。"},
+{"s":"胜负点","d":"分差会从篮板和二次进攻上出来。对面的双塔在两端都有体型优势，进攻篮板能直接转成得分，防守篮板能发动转换，而塔图姆这套阵容整体偏矮，卡位吃亏。另一个隐患是体力：塔图姆要在两端都对付大体型，到了第四节他的投篮命中率大概率会掉。只要对面愿意把节奏放慢打阵地，这两个问题都会被放大。"},
+{"s":"调整","d":"落后的一方最可能做的是提前包夹内线，赌对面外线的手感，同时用换防去限制塔图姆的接球。这个调整短期内有效，但代价是外线会漏空位，而且包夹之后的轮转需要全队高度默契，一旦慢半拍就是连续失分。更长远的办法是提速，把比赛打成回合数更多的乱战，用数量稀释对面的体型优势，但这要求后卫线能持续施压。"}],
+"matchups":[
+{"a":"塔图姆","b":"对方大前锋","d":"塔图姆被迫全场对抗更大体型的球员，第四节的投篮效率会先垮。"},
+{"a":"普里查德","b":"对方锋线","d":"身高差距太大，会被反复背身单打，是防守端最容易被针对的一点。"},
+{"a":"怀特","b":"对方后卫","d":"绕掩护经验足，能限制怀特的接球投篮节奏，但挡不住他的突破分球。"}]}
+
+注意上面每条 process 都是一百多字、并且回答了括号里那三个问题 —— 你要写到这个程度。`;
+
+  return {system, user};
+}
+
+/* ---------- 输出纠错：抹掉不该出现的球队名 ----------
+   免费模型有很强的语言惯性（"掘金 vs 湖人"是常见搭配），光靠指令压不住。
+   这里做一道确定性兜底：
+   · 如果某一边是"某支真实球队的首发"，那个队名是允许的（模型说对了就留着）
+   · 其它任何球队名一律抹掉 —— 抹掉比替换安全，因为替换可能换错边（把对手说成"我的阵容"）。 */
+function cleanTeamNames(out, A, B){
+  const allowed={};
+  const soloA=teamLabel(A), soloB=teamLabel(B);
+  if(soloA) allowed[soloA]=1;
+  if(soloB) allowed[soloB]=1;
+  const fix=function(str){
+    if(!str) return str;
+    let t=String(str);
+    Object.keys(TEAMS).forEach(function(c){
+      if(allowed[TEAMS[c]]) return;                 /* 这一队是场上真实存在的，允许出现 */
+      [TEAMS[c], TEAM_SHORT[c]].forEach(function(nm){
+        if(nm && t.indexOf(nm)>=0) t=t.split(nm).join("");
+      });
+    });
+    return t.replace(/^[，、。：\s]+/,"").replace(/\s{2,}/g," ").replace(/[，、]{2,}/g,"，").replace(/^[，、。]/,"");
+  };
+  ["headline","verdict","styleA","styleB"].forEach(function(k){ if(out[k]) out[k]=fix(out[k]); });
+  (out.process||[]).forEach(function(x){ if(x.d) x.d=fix(x.d); });
+  (out.matchups||[]).forEach(function(x){ if(x.d) x.d=fix(x.d); });
+  return out;
+}
+
+/* ---------- 免费模式守卫 ---------- */
+function assertFree(cfg){
+  const c=Object.assign({},DEF_CFG,cfg||{});
+  if(c.freeOnly===false) return;
+  if(isFreeModel(c.model, c.base)) return;
+  const err=new Error("这个模型不在免费名单里，已经拦下，请求没有发出去");
+  err.kind="notfree";
+  err.detail="当前模型："+c.model+"　接口："+c.base;
+  throw err;
+}
+/* 各家把错误码放在 body 里，而且状态码会骗人：
+   智谱的「余额不足」和「达到速率限制」都返回 HTTP 429。所以以 body 里的 code 为准。 */
+function readApiError(body){
+  try{
+    const d=JSON.parse(body);
+    const e=d.error||d;
+    return { code:String(e.code||""), msg:String(e.message||e.msg||"").slice(0,180) };
+  }catch(e){
+    return { code:"", msg:String(body||"").replace(/\s+/g," ").slice(0,180) };
+  }
+}
+
+async function callLLM(cfg, system, user, onWait, _try){
+  assertFree(cfg);
+  const attempt = _try||0;
+  const url = cfg.base.replace(/\/+$/,"") + "/chat/completions";
+  let res;
+  try{
+    res = await fetch(url,{
+      method:"POST",
+      headers:{"Content-Type":"application/json","Authorization":"Bearer "+cfg.key},
+      body:JSON.stringify({
+        model: cfg.model,
+        temperature: 0.85,
+        messages:[{role:"system",content:system},{role:"user",content:user}]
+      })
+    });
+  }catch(e){
+    const err=new Error("连不上接口");
+    err.kind="connect"; err.detail=e.message;
+    throw err;
+  }
+  if(!res.ok){
+    const t = await res.text().catch(()=> "");
+    const info = readApiError(t);
+    const err = new Error("接口返回 "+res.status);
+    err.kind = "http"; err.status = res.status;
+    err.code = info.code;
+    /* 详情一定要有内容 —— 服务端偶尔返回空 body，那样报错就只剩一句"接口返回了错误" */
+    err.detail = "HTTP "+res.status
+      + (info.code? "　错误码 "+info.code : "")
+      + (info.msg? "："+info.msg : "（返回体是空的，多半是服务端限流或临时故障，等一会儿再试）");
+    if(info.code==="1113")        err.kind="nobalance";
+    else if(info.code==="1302")   err.kind="ratelimit";
+    else if(res.status===401||res.status===403) err.kind="auth";
+    else if(res.status===429)     err.kind="ratelimit";
+    const WAITS=[4,10];
+    if(err.kind==="ratelimit" && attempt<WAITS.length){
+      const wait=WAITS[attempt];
+      if(typeof onWait==="function") onWait("免费额度被限流了，等 "+wait+" 秒自动重试（第 "+(attempt+2)+" 次）…");
+      await new Promise(function(r){ setTimeout(r, wait*1000); });
+      return callLLM(cfg,system,user,onWait,attempt+1);
+    }
+    throw err;
+  }
+  let data;
+  try{
+    data = await res.json();
+  }catch(parseErr){
+    const err=new Error("接口返回的不是 JSON");
+    err.kind="http"; err.status=res.status;
+    err.detail="HTTP "+res.status+"　返回体不是 JSON（服务端限流或临时故障，等十几秒再试）";
+    throw err;
+  }
+  if(data.error){
+    const info=readApiError(JSON.stringify(data));
+    const err=new Error("接口返回错误");
+    err.kind = info.code==="1113"?"nobalance" : info.code==="1302"?"ratelimit" : "http";
+    err.code=info.code; err.status=res.status;
+    err.detail="HTTP "+res.status+(info.code? "　错误码 "+info.code : "")+(info.msg? "："+info.msg : "");
+    throw err;
+  }
+  const txt = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || "";
+  if(!txt){ const err=new Error("接口没有返回内容"); err.kind="empty"; err.detail=""; throw err; }
+
+  try{ return parseJSON(txt); }catch(e){}
+  try{ return parseJSONLenient(txt); }catch(e){}
+  const fixed = await repairJSON(cfg, txt);
+  if(fixed) return fixed;
+  const err=new Error("模型返回的不是合法 JSON");
+  err.kind="parse"; err.detail=txt.slice(0,400);
+  throw err;
+}
+
+async function repairJSON(cfg, broken){
+  try{
+    const r = await fetch(cfg.base.replace(/\/+$/,"")+"/chat/completions",{
+      method:"POST",
+      headers:{"Content-Type":"application/json","Authorization":"Bearer "+cfg.key},
+      body:JSON.stringify({
+        model:cfg.model, temperature:0.1,
+        messages:[
+          {role:"system",content:"你是一个 JSON 修复器。用户会给你一段格式损坏的 JSON，请把它修成合法 JSON 后原样输出。要求：所有引号、冒号、逗号必须是英文半角；键名和字符串必须用英文双引号；不要增删任何字段和内容；只输出 JSON，不要任何解释、不要代码块。"},
+          {role:"user",content:"把下面这段修成合法 JSON：\n\n"+String(broken).slice(0,4000)}
+        ]
+      })
+    });
+    if(!r.ok) return null;
+    const d=await r.json();
+    const t=(d.choices&&d.choices[0]&&d.choices[0].message&&d.choices[0].message.content)||"";
+    if(!t) return null;
+    try{ return parseJSON(t); }catch(e){}
+    try{ return parseJSONLenient(t); }catch(e){ return null; }
+  }catch(e){ return null; }
+}
+
+function parseJSONLenient(txt){
+  const src = String(txt);
+  const a = src.indexOf("{"), b = src.lastIndexOf("}");
+  if(a<0||b<=a) throw new Error("no json");
+  let body = src.slice(a,b+1);
+
+  /* 第一层：模型在中文语境里会把 JSON 的标点"顺手"打成全角。
+     只要把【结构位置】上的全角标点换回半角，字符串内部的中文标点不用动。 */
+  body = body
+    .replace(/([{,]\s*)"([A-Za-z_][A-Za-z0-9_]*):"(?=[^"\s])/g, '$1"$2":"')
+    .replace(/\u201d\s*\uff0c\s*\u201c/g,'","')
+    .replace(/\u201d\s*\uff0c/g,'",')
+    .replace(/\uff0c\s*\u201c/g,',"')
+    .replace(/[\u201c\u201d]/g,'"')
+    .replace(/[\u2018\u2019]/g,"'")
+    .replace(/(["\]\}0-9a-zA-Z])\s*\uff1a/g,'$1:')
+    .replace(/,\s*([}\]])/g,'$1');
+  try{ return JSON.parse(body); }catch(e){}
+
+  try{
+    const b2 = body.replace(/"((?:[^"\\]|\\.)*)"/g, function(m,p1){
+      return '"'+p1.replace(/\r/g,'').replace(/\n/g,'\\n').replace(/\t/g,'\\t')+'"';
+    });
+    return JSON.parse(b2);
+  }catch(e){}
+
+  try{
+    let b3 = body.replace(/,\s*[^,{}\[\]]*$/,'').replace(/,\s*$/,'');
+    const needC = (b3.match(/\{/g)||[]).length - (b3.match(/\}/g)||[]).length;
+    const needB = (b3.match(/\[/g)||[]).length - (b3.match(/\]/g)||[]).length;
+    if(needC>0 || needB>0){
+      b3 = b3 + ']'.repeat(Math.max(0,needB)) + '}'.repeat(Math.max(0,needC));
+      return JSON.parse(b3);
+    }
+  }catch(e){}
+
+  throw new Error("no json");
+}
+
+/* 一句话版本，给 toast 这种放不下长句的地方用 */
+function errShort(e){
+  const k=e&&e.kind;
+  return ({notfree:"模型不在免费名单里", nobalance:"账号没有余额", ratelimit:"被免费额度限流了",
+           auth:"Key 被接口拒绝", connect:"连不上接口（可能被浏览器的跨域策略拦了）",
+           parse:"模型返回的格式不合法", empty:"接口没有返回内容"})[k]
+    || ("接口报错"+(e&&e.code? "（"+e.code+"）":""));
+}
+
+/* 把技术错误翻译成人话。重点是把「跨域被拦」和「限流」这两种最容易被误判成
+   "网络不好" / "Key 写错了" 的情况区分开 —— 否则排查方向一开始就是错的。 */
+function friendlyErr(e){
+  const k = e && e.kind;
+  if(k==="notfree")
+    return "拦下了一次可能要花钱的调用 —— 当前模型不在免费名单里。免费模式开着的时候只会调用名单内的模型。真想用它，就在弹窗里把「只允许免费模型」关掉。";
+  if(k==="nobalance")
+    return "这个账号没有余额、也没有可用资源包（错误码 1113）。这说明当前调的其实是付费模型，或者免费额度已经用完了。免费模式下不该出现这种情况，先检查模型名有没有填错。";
+  if(k==="ratelimit")
+    return "被免费额度的速率限制挡住了（错误码 1302）。免费模型都有并发和频率上限，等十几秒再点一次；如果反复被拦，换回 GLM-4-Flash（它的免费额度更宽）。";
+  if(k==="connect")
+    return "请求根本没发出去。最常见的原因是这家接口不允许网页直接调用（被浏览器的跨域策略拦了），不是你的 Key 写错了。换成智谱就能直接连；如果一定要用这家，得挂一层本地代理。顺便也确认下网络是通的。";
+  if(k==="auth")
+    return "接口拒绝了这个 Key（401 / 403）。检查一下 Key 有没有复制完整、有没有过期。";
+  if(k==="parse")
+    return "模型答回来了，但格式不合法，自动修复那一次也没成功。免费的小模型偶尔会这样，再点一次「开始对决」通常就好。";
+  if(k==="empty")
+    return "接口是通的，但返回内容是空的。大概率是模型名填错了 —— 要填 API 用的模型 ID，不是控制台里的显示名。";
+  return "接口返回了错误"+(e&&e.detail? "："+String(e.detail).slice(0,180)
+    : ("（HTTP "+(e&&e.status?e.status:"?")+"，且没有更多信息）"));
+}
+
+function parseJSON(txt){
+  let s = txt.trim();
+  s = s.replace(/^```(?:json)?/i,"").replace(/```$/,"").trim();
+  const a = s.indexOf("{"), b = s.lastIndexOf("}");
+  if(a>=0 && b>a) s = s.slice(a,b+1);
+  return JSON.parse(s);
+}
+
+/* 连接自检：发一个最小请求，把「到底哪一步出问题」问清楚 */
+async function netDiag(cfg){
+  const c=Object.assign({},DEF_CFG,cfg||{});
+  const info={ base:c.base, model:c.model, ms:0, ok:false, status:0,
+               proto:(typeof location!=="undefined"? location.protocol : "?"),
+               origin:(function(){ try{ return location.origin; }catch(e){ return "(读不到)"; } })(),
+               host:(function(){ try{ return location.host||"(空)"; }catch(e){ return "?"; } })() };
+  const t0=Date.now();
+  try{
+    const r=await fetch(c.base.replace(/\/+$/,"")+"/chat/completions",{
+      method:"POST",
+      headers:{"Content-Type":"application/json","Authorization":"Bearer "+c.key},
+      body:JSON.stringify({model:c.model,messages:[{role:"user",content:"hi"}],max_tokens:1})
+    });
+    const body=await r.text().catch(()=> "");
+    info.ms=Date.now()-t0; info.ok=r.ok; info.status=r.status; info.api=readApiError(body);
+  }catch(e){
+    info.ms=Date.now()-t0;
+    info.errName=e.name; info.errMsg=String(e.message||"").slice(0,200);
+  }
+  return info;
+}
+function diagText(d){
+  const head="页面协议："+d.proto+"　来源："+d.origin;
+  if(d.ok) return "✅ 通了。HTTP "+d.status+"，耗时 "+d.ms+"ms，用的是 "+d.model+"。\n"+head;
+  if(d.errName){
+    return "❌ 请求根本没发出去（"+(d.errName||"")+"："+(d.errMsg||"")+"）。\n"+head
+      + "\n\n最常见的原因，按可能性排：\n"
+      + "① 你是在某个软件的预览窗口里打开这个文件的 —— 预览窗口通常会拦掉对外请求。"
+      + "请把《NBA首发五人对决.html》用 Chrome / Edge / Safari 直接打开再试。\n"
+      + "② 浏览器装了广告拦截类插件，把请求当成广告拦了，先关掉插件试试。\n"
+      + "③ 网络本身不通，或者走了公司网络 / 代理。";
+  }
+  const code=d.api&&d.api.code;
+  if(code==="1113") return "❌ 接口说「余额不足或无可用资源包」（1113）。当前模型 "+d.model+" 是付费模型，免费模式下不该出现这个。";
+  if(code==="1302") return "❌ 接口说「已达到速率限制」（1302）。请求是通的，只是免费额度被限流了，等十几秒再试。";
+  if(d.status===401||d.status===403) return "❌ 接口拒绝了 Key（HTTP "+d.status+"）"+(d.api?"："+d.api.msg:"")+"。检查 Key 有没有复制完整。";
+  return "❌ 接口返回 HTTP "+d.status+(d.api&&d.api.msg? "："+d.api.msg : "")+"。\n"+head;
+}
+/* ================= 界面状态与渲染（手机活动页） ================= */
+const $=s=>document.querySelector(s);
+const $$=s=>Array.prototype.slice.call(document.querySelectorAll(s));
+const S={ me:[], opp:[], oppMode:"team", oppTeam:"BOS",
+          f:{pos:"ALL",tier:"ALL",team:"ALL",q:""}, busy:false,
+          sheet:{target:"me", pos:"ALL"} };
+
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function toast(msg){
+  const t=$("#toast"); t.textContent=msg; t.classList.add("on");
+  clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("on"),1900);
+}
+function badge(t, big){
+  const c=TIERS[t];
+  const fs = big? 11.5 : 10, pd = big? "2px 7px" : "2px 6px";
+  return `<span style="display:inline-block;background:${c.bg};color:${c.c};font-weight:800;font-size:${fs}px;padding:${pd};border-radius:5px;white-space:nowrap;line-height:1.35">${t} ${c.n}</span>`;
+}
+function mark(t){
+  const c=TIERS[t];
+  return `<span style="display:inline-flex;align-items:center;justify-content:center;width:23px;height:23px;border-radius:7px;background:${c.bg};color:${c.c};font-weight:800;font-size:11.5px;flex:none">${t}</span>`;
+}
+
+/* ---------- 阵容槽：点一下弹出选人抽屉 ---------- */
+function slotHTML(pos, p, editable, target){
+  const body = p
+    ? `<div class="sl-txt">
+         <div class="sl-nm">${esc(p.cn)}</div>
+         <div class="sl-sub">${badge(p.tier)}<span class="mono">${esc(TEAMS[p.team])} · 评级 ${p.score}</span></div>
+       </div>
+       <div class="sl-rt"><span class="sl-pr mono">${p.price}%</span>
+       ${editable?`<span class="x" data-rm="${pos}">×</span>`:""}</div>`
+    : `<div class="sl-txt"><div class="sl-add">＋ 点击选人</div></div>`;
+  return `<div class="slot ${p?"":"empty"}" data-pos="${pos}" data-target="${target}">
+    <span class="sl-pos">${pos}</span>${body}</div>`;
+}
+function renderSlots(el, L, editable, target){
+  const box=$(el); if(!box) return;
+  box.innerHTML = POS.map(pos=> slotHTML(pos, L.find(p=>p.pos===pos), editable, target)).join("");
+  box.querySelectorAll(".slot").forEach(s=>{
+    s.addEventListener("click",e=>{
+      if(e.target.classList.contains("x")) return;
+      openSheet(target, s.getAttribute("data-pos"));
+    });
+  });
+  box.querySelectorAll("[data-rm]").forEach(x=>x.addEventListener("click",e=>{
+    e.stopPropagation();
+    const arr = target==="me"? S.me : S.opp;
+    const k = arr.findIndex(p=>p.pos===x.getAttribute("data-rm"));
+    if(k>=0) arr.splice(k,1);
+    if(target==="opp"){ S.oppMode="manual"; }
+    renderAll();
+  }));
+}
+
+/* ---------- 工资帽 ---------- */
+function renderBudget(){
+  const price=lineupPrice(S.me);
+  const tiers=[11,10,9,8,7,6,5,4,3,2,1];
+  const bar=$("#bar");
+  if(bar) bar.innerHTML = tiers.map(t=>{
+    const w=S.me.filter(p=>p.tier===t).reduce((a,p)=>a+p.price,0);
+    return w? `<i style="width:${w/CAP*100}%;background:${TIERS[t].c}" title="${t} ${TIERS[t].n}"></i>`:"";
+  }).join("");
+  const bt=$("#budgetTxt");
+  if(bt) bt.innerHTML = `<span class="${price>CAP?"over":""}">${price}%</span> / 100%`;
+}
+
+/* ---------- 阵容构成 ----------
+   这里【只描述事实】，不打分、不下判断。
+   固定规则判不准适配性 —— 它看不出约基奇既能拉开空间又能低位单打，
+   也分不清三个人是"都粘球"还是"都能打无球"。评价交给大模型。 */
+function renderProfile(){
+  const box=$("#myProfile"); if(!box) return;
+  if(S.me.length<2){ box.classList.add("hide"); return; }
+  box.classList.remove("hide");
+  const f=profile(S.me).fact;
+  let t=`${f.shooters} 人有稳定的三分出手，${f.bigs} 个内线`;
+  if(f.needBall) t+=`，${f.needBall} 人习惯持球`;
+  t+="。";
+  if(S.me.length===5) t+=`球权会先集中到${f.lead}手上。`;
+  $("#myDesc").textContent=t;
+}
+
+/* ---------- 选人抽屉 ---------- */
+function openSheet(target, pos){
+  S.sheet.target = target;
+  S.f.pos = pos || "ALL";
+  S.f.q=""; S.f.tier="ALL"; S.f.team="ALL";
+  const nm = target==="me"? "我的阵容" : "对手阵容";
+  $("#sheetTitle").textContent = nm + " · 选 " + (pos||"任意位置");
+  renderFilters(); renderPool();
+  $("#sheetMask").classList.remove("hide");
+  document.body.classList.add("noscroll");
+}
+function closeSheet(){
+  $("#sheetMask").classList.add("hide");
+  document.body.classList.remove("noscroll");
+}
+function renderFilters(){
+  const posBtns=["ALL"].concat(POS);
+  const teams=Object.keys(TEAMS).sort((a,b)=>TEAMS[a].localeCompare(TEAMS[b],"zh"));
+  const tierChips=[11,10,9,8,7,6,5,4,3,2,1].map(t=>{
+    const on=S.f.tier===t, c=TIERS[t];
+    return `<span class="chip" data-ft="${t}"
+      style="padding:4px 6px;min-width:26px;text-align:center;${on?`background:${c.c};border-color:${c.c};color:#fff`:`color:${c.c}`}">${t}</span>`;
+  }).join("");
+  $("#filters").innerHTML =
+    `<input class="search" id="q" placeholder="搜球员 / 球队…" value="${esc(S.f.q)}">
+     <div class="frow">${posBtns.map(p=>`<span class="chip ${S.f.pos===p?"on":""}" data-fp="${p}">${p==="ALL"?"全部":p}</span>`).join("")}</div>
+     <div class="frow"><span class="flbl">档位</span>
+       <span class="chip ${S.f.tier==="ALL"?"on":""}" data-ft="ALL">全部</span>${tierChips}
+     </div>
+     <div class="frow">
+       <select id="teamF">
+         <option value="ALL">全部球队</option>
+         ${teams.map(t=>`<option value="${t}" ${S.f.team===t?"selected":""}>${TEAMS[t]}</option>`).join("")}
+       </select>
+     </div>`;
+  $("#q").addEventListener("input",e=>{ S.f.q=e.target.value.trim(); renderPool(); });
+  $("#teamF").addEventListener("change",e=>{ S.f.team=e.target.value; renderPool(); });
+  $$("#filters [data-fp]").forEach(c=>c.addEventListener("click",()=>{S.f.pos=c.getAttribute("data-fp");renderFilters();renderPool();}));
+  $$("#filters [data-ft]").forEach(c=>c.addEventListener("click",()=>{
+    const v=c.getAttribute("data-ft"); S.f.tier = v==="ALL"? "ALL" : +v; renderFilters(); renderPool();
+  }));
+}
+function filtered(){
+  const q=S.f.q.toLowerCase();
+  return PLAYERS.filter(p=>{
+    if(S.f.pos!=="ALL" && p.pos!==S.f.pos) return false;
+    if(S.f.tier!=="ALL" && p.tier!==S.f.tier) return false;
+    if(S.f.team!=="ALL" && p.team!==S.f.team) return false;
+    if(q && !(p.cn.indexOf(q)>=0 || p.en.toLowerCase().indexOf(q)>=0 || TEAMS[p.team].indexOf(q)>=0)) return false;
+    return true;
+  }).sort((a,b)=> b.tier-a.tier || b.ppg-a.ppg);
+}
+function renderPool(){
+  const list=filtered();
+  const L = S.sheet.target==="me"? S.me : S.opp;
+  const box=$("#pool");
+  box.innerHTML = list.length? list.map(p=>{
+    const chk=canAdd(L,p), c=TIERS[p.tier];
+    return `<div class="pcard ${chk.ok?"":"dis"}" data-pi="${p.i}">
+      ${mark(p.tier)}
+      <span class="posb">${p.pos}</span>
+      <div class="info">
+        <div class="n">${esc(p.cn)} <span style="font-weight:600;font-size:10.5px;color:${c.c}">${c.n}</span></div>
+        <div class="m">${esc(TEAMS[p.team])} · ${p.gp? p.ppg.toFixed(1)+"分 "+p.rpg.toFixed(1)+"板 "+p.apg.toFixed(1)+"助":"上季报销"}</div>
+      </div>
+      <span class="p" style="color:${chk.ok?"var(--text)":"var(--dim)"}">${p.price}%</span>
+    </div>`;
+  }).join("") : `<div class="pempty">没有符合条件的球员</div>`;
+  $$("#pool .pcard").forEach(c=>c.addEventListener("click",()=>pick(+c.getAttribute("data-pi"))));
+}
+function pick(i){
+  const p=PLAYERS[i];
+  const L = S.sheet.target==="me"? S.me : S.opp;
+  const chk=canAdd(L,p);
+  if(!chk.ok){ toast(chk.why); return; }
+  /* 同位置 заменяем */
+  const same=L.findIndex(x=>x.pos===p.pos);
+  if(same>=0) L.splice(same,1);
+  L.push(p);
+  if(S.sheet.target==="opp") S.oppMode="manual";
+  closeSheet();
+  renderAll();
+}
+
+/* ---------- 挑战码 ---------- */
+function encodeL(L){ return "DUEL2-"+L.map(p=>p.i.toString(36)).join("."); }
+function decodeL(s){
+  const m=String(s).trim().match(/DUEL\d-([0-9a-z.]+)/i);
+  if(!m) return null;
+  const out=[];
+  m[1].split(".").forEach(t=>{
+    const i=parseInt(t,36);
+    if(PLAYERS[i] && !out.some(p=>p.i===PLAYERS[i].i) && !out.some(p=>p.pos===PLAYERS[i].pos)) out.push(PLAYERS[i]);
+  });
+  return out.length===5? out : null;
+}
+
+/* ---------- 统一渲染 ---------- */
+function renderAll(){
+  renderSlots("#slots", S.me, true, "me");
+  if(S.oppMode==="team"){ S.opp = teamBestFive(S.oppTeam); }
+  renderSlots("#oppSlots", S.opp, false, "opp");
+  renderSlots("#oppSlots2", S.opp, true, "opp");
+  renderBudget(); renderProfile();   /* 球员列表只在抽屉打开时才渲染，省得每次重画 248 张卡 */
+  const ok = rosterReady(S.me) && rosterReady(S.opp);
+  const go=$("#goBtn");
+  if(go) go.disabled = !ok || S.busy;
+  $("#statusTxt").textContent = ok? "两边都齐了" : `我方 ${S.me.length}/5 · 对手 ${S.opp.length}/5`;
+  const code = rosterReady(S.me)? encodeL(S.me) : null;
+  const mc=$("#myCode");
+  if(mc){ mc.textContent = code || "先组满五人，这里会自动生成。"; mc._code = code || ""; }
+}
+function setOppMode(m){
+  S.oppMode=m;
+  $$("#oppTabs .tab").forEach(t=>t.classList.toggle("on", t.getAttribute("data-m")===m));
+  $("#oppTeam").classList.toggle("hide", m!=="team");
+  $("#oppManual").classList.toggle("hide", m!=="manual");
+  $("#oppLink").classList.toggle("hide", m!=="link");
+  renderAll();
+}
+/* ================= 交互 · 分析 · 结果 ================= */
+
+/* ---------- 九维参考对照（折叠区）---------- */
+function dimRows(m){
+  const nm={create:"持球硬解",spacing:"空间拉开",interior:"内线终结",rim:"护框",perim:"外线防守",
+            rebound:"篮板",play:"组织串联",pace:"转换节奏",health:"健康续航"};
+  return m.edges.map(e=>{
+    const a=Math.round(e.a), b=Math.round(e.b);
+    const ca = e.diff>1? "var(--red)" : e.diff<-1? "#c9ced8" : "#9aa3b0";
+    const cb = e.diff<-1? "var(--blue)" : e.diff>1? "#c9ced8" : "#9aa3b0";
+    return `<div class="dimrow">
+      <div class="dl" style="color:${e.diff>1?"var(--red)":"var(--muted)"}">${a}</div>
+      <div class="mid">
+        <div class="half l"><i style="width:${a}%;background:${ca}"></i></div>
+        <span class="dmn">${nm[e.k]}</span>
+        <div class="half r"><i style="width:${b}%;background:${cb}"></i></div>
+      </div>
+      <div class="dr" style="color:${e.diff<-1?"var(--blue)":"var(--muted)"}">${b}</div>
+    </div>`;
+  }).join("");
+}
+
+/* ---------- 结果渲染 ----------
+   手机版：只给「谁赢 + 为什么 + 分析过程 + 关键对位」。
+   不给比分 —— 真实比赛还有替补轮换，只比首发五人，给具体比分没有意义。 */
+function renderResult(m, llm, err){
+  const winA = llm ? llm.winner!=="B" : null;
+  const winName = winA===null? "" : (winA? "我的阵容":"对手阵容");
+  const winC = winA? "var(--red)" : "var(--blue)";
+
+  let html = "";
+
+  /* ① 谁赢 */
+  if(winA!==null){
+    html += `<div class="rs-win">
+      <div class="rs-lbl">分析结果</div>
+      <div class="rs-who" style="color:${winC}">${winName} <span>更可能赢</span></div>
+      ${llm.headline? `<div class="rs-hl">${esc(llm.headline)}</div>`:""}
+    </div>`;
+    if(llm.styleA || llm.styleB){
+      html += `<div class="rs-styles">
+        <span class="stl"><i style="background:var(--red)"></i>我的阵容 · ${esc(llm.styleA||"—")}</span>
+        <span class="stl"><i style="background:var(--blue)"></i>对手阵容 · ${esc(llm.styleB||"—")}</span>
+      </div>`;
+    }
+    if(llm.verdict) html += `<div class="rs-verdict">${esc(llm.verdict).replace(/\n/g,"</p><p>")}</div>`;
+  }else{
+    html += `<div class="rs-win">
+      <div class="rs-lbl">分析结果</div>
+      <div class="rs-who" style="color:var(--muted);font-size:19px">暂时没有结论</div>
+      <div class="rs-hl" style="font-weight:600;color:var(--muted)">大模型没接上，下面只给出两套阵容的参考维度</div>
+    </div>`;
+  }
+
+  /* ② 分析过程 —— 这是这个玩法的核心，四步 */
+  if(llm && llm.process && llm.process.length){
+    html += `<div class="rs-sec">分 析 过 程</div><div class="steps">`
+      + llm.process.map(function(x,i){
+          return `<div class="step">
+            <span class="step-n">${i+1}</span>
+            <div class="step-b"><b>${esc(x.s||"")}</b><p>${esc(x.d||"")}</p></div>
+          </div>`;
+        }).join("") + `</div>`;
+  }
+
+  /* ③ 关键对位 */
+  if(llm && llm.matchups && llm.matchups.length){
+    html += `<div class="rs-sec">关 键 对 位</div><div class="mus">`
+      + llm.matchups.slice(0,3).map(function(u){
+          return `<div class="mu">
+            <div class="mu-t"><b>${esc(u.a||"")}</b><span class="mu-vs">对</span><b>${esc(u.b||"")}</b></div>
+            <div class="mu-d">${esc(u.d||"")}</div>
+          </div>`;
+        }).join("") + `</div>`;
+  }
+
+  /* ④ 九维参考对照（折叠，默认收起） */
+  html += `<div class="morewrap">
+    <button class="morebtn" id="moreBtn">看九维参考对照</button>
+    <div class="morebox hide" id="moreBox">
+      <div class="dims">
+        <div class="dimhead"><span style="color:var(--red)">我的阵容 ←</span><span style="color:var(--muted)">参考维度</span><span style="color:var(--blue)">→ 对手阵容</span></div>
+        ${dimRows(m)}
+        <p class="dimfoot">这九个数值是用固定公式从球员数据里算出来的粗略估计，只是提示可以看哪些角度，<b>不是评分，也不是结论</b>。</p>
+      </div>
+    </div></div>`;
+
+  /* ⑤ 备注与按钮 */
+  if(llm){
+    html += `<div class="note">由大模型分析 · 只判断胜负，不给比分（真实比赛还有替补轮换）</div>`;
+  }else if(err){
+    const _c=loadCfg();
+    html += `<div class="note bad">
+        <b>大模型没接上。</b><br>
+        <b>原因：</b>${esc(String(err))}<br>
+        <span style="color:var(--dim)">用的接口 <span class="mono">${esc(_c.base)}</span>，模型 <span class="mono">${esc(_c.model)}</span>。</span>
+        <div style="margin-top:10px"><button class="btn sm" id="retryBtn">再试一次</button>
+        <button class="btn ghost sm" id="diagBtn2" style="margin-left:8px">去设置</button></div></div>`;
+  }
+  html += `<div class="rs-acts">
+      <button class="btn" id="rerollBtn">重新分析</button>
+      <button class="btn ghost" id="copyResBtn">复制</button>
+      <button class="btn ghost" id="againBtn">改阵容</button>
+    </div>`;
+
+  const card=$("#resultCard");
+  card.innerHTML = html;
+  const sec=$("#resultSect");
+  sec.classList.remove("hide");
+  sec.scrollIntoView({behavior:"smooth",block:"start"});
+
+  const mb=$("#moreBtn");
+  if(mb) mb.addEventListener("click",function(){
+    const box=$("#moreBox");
+    box.classList.toggle("hide");
+    this.textContent = box.classList.contains("hide")? "看九维参考对照" : "收起参考对照";
+  });
+  const ag=$("#againBtn");
+  if(ag) ag.addEventListener("click",()=>{ sec.scrollIntoView({behavior:"smooth"}); });
+  const rr=$("#rerollBtn");
+  if(rr) rr.addEventListener("click",()=>{ S.busy=false; runAnalysis(false); });
+  const cp=$("#copyResBtn");
+  if(cp) cp.addEventListener("click",()=>{
+    const txt = llm
+      ? `【首发五人对决】${winName}更可能赢\n${llm.headline||""}\n\n${llm.verdict||""}\n\n`
+        + (llm.process||[]).map(function(x){ return "· "+x.s+"："+x.d; }).join("\n")
+      : "【首发五人对决】大模型没接上，只有参考维度对照。";
+    navigator.clipboard.writeText(txt).then(()=>toast("已复制"),()=>toast("复制失败"));
+  });
+  const rb=$("#retryBtn"); if(rb) rb.addEventListener("click",()=>{ S.busy=false; runAnalysis(false); });
+  const db2=$("#diagBtn2"); if(db2) db2.addEventListener("click",openCfg);
+}
+
+/* ---------- 发起分析 ---------- */
+async function runAnalysis(){
+  if(S.busy) return;
+  if(!rosterReady(S.me)||!rosterReady(S.opp)){ toast("先把两边五个人都组好"); return; }
+  const m=matchup(S.me,S.opp);
+  S.busy=true;
+  const go=$("#goBtn"); if(go) go.disabled=true;
+  const sec=$("#resultSect");
+  sec.classList.remove("hide");
+  $("#resultCard").innerHTML=`<div class="loader"><span class="spin"></span>正在看这两套阵容摆在一起会是什么局面…</div>`;
+  sec.scrollIntoView({behavior:"smooth",block:"start"});
+
+  if(!cfgReady()){
+    renderResult(m,null,"没有可用的模型配置");
+    S.busy=false; if(go) go.disabled=false; renderAll();
+    return;
+  }
+  const cfg=loadCfg();
+  try{
+    const {system,user}=buildPrompt(S.me,S.opp,m);
+    const out=await callLLM(cfg,system,user,function(msg){
+      const rc=$("#resultCard");
+      if(rc) rc.innerHTML='<div class="loader"><span class="spin"></span>'+esc(msg)+'</div>';
+    });
+    if(!out || !out.winner || (!out.verdict && !(out.process&&out.process.length)))
+      throw new Error("模型返回的格式不完整");
+    if(out.winner!=="A" && out.winner!=="B") out.winner = "A";
+    cleanTeamNames(out, S.me, S.opp);      /* 抹掉模型顺手写错的队名 */
+    renderResult(m,out,null);
+  }catch(e){
+    renderResult(m,null,friendlyErr(e));
+    toast("大模型没接上（"+errShort(e)+"）");
+  }
+  S.busy=false; if(go) go.disabled=false; renderAll();
+}
+
+/* ---------- 弹窗 ---------- */
+function openModal(html){ $("#modal").innerHTML=html; $("#mask").classList.remove("hide"); }
+function closeModal(){ $("#mask").classList.add("hide"); }
+
+function openCfg(){
+  const c=loadCfg();
+  const freeOnly = c.freeOnly!==false;
+  const usingBuiltin = (c.key===BUILTIN_KEY);
+  const chips = PRESETS.map(function(p,i){
+    const lock = freeOnly && p.paid;
+    return '<span class="preset'+(p.cors&&!lock?'':' no')+'" data-i="'+i+'"><b>'+esc(p.n)+'</b><em>'+esc(p.tag)+'</em></span>';
+  }).join("");
+
+  openModal(`<h3>接上大模型</h3>
+    <p class="desc"><b>已经帮你配好了 —— 文件里内置了一个免费的智谱 Key，直接用就行，不花钱。</b><br>
+    免费模式默认开着：只有白名单里的免费模型能调，填成付费模型会被直接拦住，请求根本不会发出去。<br>
+    胜负和分析全部由大模型判断，引擎只提供一组参考角度。</p>
+
+    <div class="fld"><label>① 选一家（点一下自动填）</label>
+      <div id="presetBox">${chips}</div>
+      <div class="tip" id="presetTip"></div></div>
+    <div class="fld"><label>② 接口地址 Base URL</label><input id="cfgBase" value="${esc(c.base)}"><div class="tip">OpenAI 兼容接口</div></div>
+    <div class="fld"><label>③ 模型名 Model</label><input id="cfgModel" value="${esc(c.model)}"><div class="tip">要填 API 的模型 ID，不是控制台里的显示名</div></div>
+    <div class="fld"><label>④ API Key</label><input id="cfgKey" type="password" value="${esc(c.key)}" placeholder="把申请到的 Key 粘在这里">
+      ${usingBuiltin? '<div class="tip" style="color:var(--gold);font-weight:600">现在用的是文件内置的免费 Key。要把这个 HTML 发给别人之前，先把文件里 BUILTIN_KEY 那一行清空（改成 ""）。</div>' : ''}</div>
+
+    <div class="fld" style="border-top:1px solid var(--line2);padding-top:12px">
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:700">
+        <input type="checkbox" id="cfgFreeOnly" ${freeOnly?"checked":""} style="width:16px;height:16px;accent-color:var(--blue);cursor:pointer">
+        只允许调用免费模型</label>
+      <div class="tip">开着的时候，模型名不在免费白名单里就会被拦下 —— 一次都不会发出去，也就不会扣钱。</div>
+    </div>
+
+    <div id="diagBox"></div>
+
+    <div class="row">
+      <button class="btn ghost sm" id="cfgDiag">测试连接</button>
+      <button class="btn ghost sm" id="cfgPrompt">看看提示词</button>
+      <button class="btn ghost sm" id="cfgReset">恢复默认</button>
+      <button class="btn ghost sm" id="cfgCancel">取消</button>
+      <button class="btn sm" id="cfgSave">保存并分析</button>
+    </div>`);
+
+  const boxes=[].slice.call(document.querySelectorAll("#presetBox .preset"));
+  const tip=$("#presetTip");
+  const isLocked=function(p){ return $("#cfgFreeOnly").checked && p.paid; };
+  function showTip(p){
+    tip.innerHTML = esc(p.note) + (p.cors? "" : ' <b style="color:var(--red)">这家网页直连会被浏览器拦掉。</b>');
+  }
+  boxes.forEach(function(el){
+    el.addEventListener("click",function(){
+      const p=PRESETS[+el.dataset.i];
+      boxes.forEach(function(b){ b.classList.remove("on"); });
+      el.classList.add("on"); showTip(p);
+      if(isLocked(p)){ toast("免费模式开着，这一家的模型要花钱，已跳过"); return; }
+      $("#cfgBase").value=p.base; $("#cfgModel").value=p.model;
+    });
+  });
+  const cur=PRESETS.findIndex(function(p){ return p.base===c.base && p.model===c.model; });
+  if(cur>=0){ boxes[cur].classList.add("on"); showTip(PRESETS[cur]); } else showTip(PRESETS[0]);
+
+  $("#cfgFreeOnly").addEventListener("change",function(){
+    toast(this.checked? "免费模式已开：只调白名单里的免费模型" : "免费模式已关：请注意产生的费用");
+  });
+  $("#cfgCancel").addEventListener("click",closeModal);
+  $("#cfgDiag").addEventListener("click",async function(){
+    const box=$("#diagBox"); if(!box) return;
+    const cfgNow={base:$("#cfgBase").value.trim(), model:$("#cfgModel").value.trim(),
+                  key:$("#cfgKey").value.trim(), freeOnly:$("#cfgFreeOnly").checked};
+    if(!cfgNow.base||!cfgNow.model||!cfgNow.key){
+      box.className="diag bad"; box.textContent="先把地址、模型名、Key 三项填上再测。"; return;
+    }
+    box.className="diag"; box.textContent="正在发一个最小请求测试…";
+    if(cfgNow.freeOnly && !isFreeModel(cfgNow.model, cfgNow.base)){
+      box.className="diag bad";
+      box.textContent="不用测了 —— 这个模型不在免费名单里，免费模式下请求会被本地拦下，发不出去。先换成 glm-4-flash。";
+      return;
+    }
+    const d=await netDiag(cfgNow);
+    box.className="diag "+(d.ok?"ok":"bad");
+    box.textContent=diagText(d);
+  });
+  $("#cfgReset").addEventListener("click",function(){
+    saveCfg({base:DEF_CFG.base, model:DEF_CFG.model, key:DEF_CFG.key, freeOnly:true});
+    closeModal(); toast("已恢复成内置的免费模型"); openCfg();
+  });
+  $("#cfgPrompt").addEventListener("click",()=>{
+    if(!rosterReady(S.me)||!rosterReady(S.opp)){ toast("先把两边的五个人都组好"); return; }
+    const m=matchup(S.me,S.opp); const p=buildPrompt(S.me,S.opp,m);
+    openModal(`<h3>发给大模型的提示词</h3>
+      <p class="desc">这就是这个玩法真正的核心资产。换任何大模型、任何产品形态，靠的都是这段话。<br>可以整段复制到任意 AI 聊天窗口里试。</p>
+      <div class="code" style="max-height:340px">${esc(p.system+"\n\n"+p.user)}</div>
+      <div class="row"><button class="btn ghost sm" id="cpPrompt">复制</button><button class="btn sm" id="pmClose">关闭</button></div>`);
+    $("#cpPrompt").addEventListener("click",()=>{ navigator.clipboard.writeText(p.system+"\n\n"+p.user).then(()=>toast("已复制")); });
+    $("#pmClose").addEventListener("click",closeModal);
+  });
+  $("#cfgSave").addEventListener("click",()=>{
+    const c2={base:$("#cfgBase").value.trim(),model:$("#cfgModel").value.trim(),
+              key:$("#cfgKey").value.trim(),freeOnly:$("#cfgFreeOnly").checked};
+    if(!c2.base||!c2.model||!c2.key){ toast("地址、模型名、Key 都要填"); return; }
+    if(c2.freeOnly && !isFreeModel(c2.model,c2.base)){
+      toast("这个模型不在免费名单里，免费模式下不能用 —— 要么改模型名，要么把「只允许免费模型」关掉");
+      return;
+    }
+    saveCfg(c2); closeModal(); toast("已保存，用的是 "+c2.model);
+    if(rosterReady(S.me)&&rosterReady(S.opp)) runAnalysis();
+  });
+}
+
+function openData(){
+  const BASIS={
+    11:"十年以上球龄的顶薪上限", 10:"顶薪 —— MVP 候选级别", 9:"顶薪 —— 最佳阵容级别",
+    8:"次顶薪 —— 全明星级别", 7:"优质首发的市场价", 6:"稳定首发的市场价",
+    5:"合格首发的市场价", 4:"全额中产条款", 3:"迷你中产 / 空间中产",
+    2:"双年特例", 1:"老将底薪"
+  };
+  const CAPUSD=16500;
+  const rows=[11,10,9,8,7,6,5,4,3,2,1].map(function(t){
+    const rng = t<11? (t+".0 – "+t+".9") : "11.0 以上";
+    return '<tr><td style="text-align:center">'+badge(t)+'</td>'
+      + '<td style="font-family:var(--mono);font-size:12px;white-space:nowrap;color:var(--muted)">'+rng+' 分</td>'
+      + '<td style="font-family:var(--mono);font-weight:700;white-space:nowrap">'+TIERS[t].p+'%</td>'
+      + '<td style="color:var(--muted);font-size:12.5px">'+BASIS[t]
+      + '　<span style="font-family:var(--mono);color:var(--dim)">≈ '+(Math.round(TIERS[t].p/100*CAPUSD))+' 万</span></td></tr>';
+  }).join("");
+  const ex=[
+    ["两个顶薪 + 三个全额中产", [11,11,4,4,4], "真实 NBA 的经典建队法"],
+    ["一个超巨 + 四个合格首发", [11,5,5,5,5], "最稳的一套"],
+    ["不要超巨，五个高配首发", [7,7,7,7,7], "刚好顶满 100%"],
+    ["四个全明星级别 + 一个底薪", [8,8,8,8,2], "纸面最漂亮"],
+    ["三个最佳阵容级别 + 两个底薪", [9,9,9,2,2], "星味够，但打不赢"]
+  ].map(function(e){
+    const sum=e[1].reduce(function(a,t){return a+TIERS[t].p;},0);
+    return '<tr><td style="font-size:12.5px">'+e[0]+'</td>'
+      + '<td style="font-family:var(--mono);white-space:nowrap;font-weight:700;color:'+(sum>CAP?'var(--red)':'var(--green)')+'">'+sum+'%</td>'
+      + '<td style="color:var(--muted);font-size:12px">'+(e[2]||'')+'</td></tr>';
+  }).join("");
+  openModal(`<h3>怎么玩</h3>
+    <p class="desc">工资帽 <b>100%</b>，五个位置各选一人，合计不能超。<br>
+    球员按《2026-27 季前球员评级分档》分成 11 档：<b>档位就是球员评分的整数部分</b>
+    （评级 7.9 分 → 7 档，评级 11.4 分 → 11 档），所以档位永远不会高于球员的实际评分。<br>
+    <b>每一档的身价 = 现实中这个级别的球星占工资帽的比例</b> —— 从顶薪 35%，一路到全额中产 10%、迷你中产 7%、双年特例 4%、老将底薪 2%。</p>
+    <table style="width:100%;font-size:13px;border-collapse:collapse"><tr><th style="text-align:center">档位</th><th>占工资帽</th><th>真实薪资里的对应位置</th></tr>${rows}</table>
+
+    <p class="desc" style="margin-top:16px"><b>为什么最多只能带 2 个顶薪？</b><br>
+    两个顶薪 = ${TIERS[11].p*2}%，正好还能签三个全额中产（${TIERS[4].p}% × 3 = ${TIERS[4].p*3}%），一共 ${TIERS[11].p*2+TIERS[4].p*3}%，刚好填满。
+    这就是真实 NBA 里最经典的一套建队方式：<b>两个顶薪 + 三个中产</b>。<br>
+    而 ${TIERS[11].p} × 3 = ${TIERS[11].p*3}%，直接超帽 —— 三个顶薪在工资帽下是签不出来的，现实里也一样。<br>
+    另外注意：五个 ${TIERS[8].p}% 的球员要花 ${TIERS[8].p*5}%，也超帽了 —— <b>连"五个全明星级别"都凑不齐</b>。</p>
+
+    <p class="desc"><b>几套能玩得转的阵容</b></p>
+    <table style="width:100%;font-size:13px;border-collapse:collapse"><tr><th>搭配</th><th>占工资帽</th><th>说明</th></tr>${ex}</table>
+
+    <p class="desc" style="margin-top:14px"><b>胜负怎么判断</b><br>
+    <b>不套规则。</b>规则算不出"适配性" —— 它不知道库里得分高但不占球，也分不清"空间拉得开"和"篮下没人"是两回事。<br>
+    所以引擎只给一组<b>参考角度</b>（九个维度的数值、球权需求排序），
+    <b>判断交给大模型</b> —— 它去看球员的类型和搭配，说出哪一套更可能赢、以及为什么。<br>
+    <b>也不给比分。</b>真实比赛还有替补轮换，只比首发五人，报一个具体比分没有意义。</p>
+
+    <p class="desc"><b>关于真实球队对手</b><br>
+    30 支真实球队的首发不受工资帽约束 —— 这是它们的天然优势，也是难度分级。
+    尼克斯、76 人、雷霆这几支是"硬仗"，挑之前先看看对面的工资帽占比。</p>
+
+    <div class="row"><button class="btn sm" id="dmClose">知道了</button></div>`);
+  $("#dmClose").addEventListener("click",closeModal);
+}
+
+/* ---------- 绑定 ---------- */
+function bindAll(){
+  $("#cfgBtn").addEventListener("click",openCfg);
+  $("#dataBtn").addEventListener("click",openData);
+  $("#mask").addEventListener("click",e=>{ if(e.target.id==="mask") closeModal(); });
+  $("#sheetMask").addEventListener("click",e=>{ if(e.target.id==="sheetMask") closeSheet(); });
+  $("#sheetClose").addEventListener("click",closeSheet);
+  $("#goBtn").addEventListener("click",()=>runAnalysis());
+  $("#clearBtn").addEventListener("click",()=>{ S.me=[]; renderAll(); });
+  $("#randBtn").addEventListener("click",()=>{
+    const L=randomLineup();
+    if(!L.length){ toast("没抽出来，再试一次"); return; }
+    S.me=L; renderAll();
+  });
+  $$("#oppTabs .tab").forEach(t=>t.addEventListener("click",()=>{ setOppMode(t.getAttribute("data-m")); }));
+  const sel=$("#teamSel");
+  sel.innerHTML=Object.keys(TEAMS).sort((a,b)=>TEAMS[a].localeCompare(TEAMS[b],"zh"))
+    .map(c=>`<option value="${c}">${TEAMS[c]}</option>`).join("");
+  sel.value=S.oppTeam;
+  sel.addEventListener("change",e=>{ S.oppTeam=e.target.value; S.opp=teamBestFive(S.oppTeam); renderAll(); });
+  $("#copyCodeBtn").addEventListener("click",()=>{
+    const c=$("#myCode")._code; if(!c){ toast("先组满五人"); return; }
+    const isHttp=location.protocol.indexOf("http")===0;
+    const txt=isHttp? (location.origin+location.pathname+"#c="+encodeURIComponent(c)) : c;
+    navigator.clipboard.writeText(txt).then(
+      ()=>toast(isHttp? "挑战链接已复制，发给朋友吧" : "挑战码已复制，发给朋友，他打开同一个文件粘贴即可"),
+      ()=>toast("复制失败，请手动长按选中上面的挑战码"));
+  });
+  $("#loadCodeBtn").addEventListener("click",()=>{
+    const L=decodeL($("#codeIn").value);
+    if(!L){ toast("挑战码看不懂，检查一下"); return; }
+    S.opp=L; setOppMode("link"); toast("对手阵容已载入");
+  });
+}
+
+/* ---------- 启动 ---------- */
+function init(){
+  bindAll();
+  S.opp=teamBestFive(S.oppTeam);
+  renderAll();
+  const h=location.hash.match(/c=([^&]+)/);
+  if(h){
+    const L=decodeL(decodeURIComponent(h[1]));
+    if(L){ S.opp=L; setOppMode("link"); toast("已载入朋友的挑战阵容，组好你的五人就能开打"); }
+  }
+}
+init();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>首发五人对决 · 玩法说明书</title>
+<style>
+:root{--bg:#eef1f6;--panel:#fff;--panel2:#f7f9fc;--line:#dfe4ec;--line2:#eaeef4;--text:#141821;--muted:#6b7280;--dim:#9aa3b0;--blue:#1d428a;--blue-l:#e9eef9;--red:#c8102e;--red-l:#fdecef;--gold:#b8860b;--gold-l:#fdf6e3;--green:#1f7a4d;--green-l:#e7f5ee;--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-size:14px;line-height:1.75;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
+.wrap{max-width:930px;margin:0 auto;padding:34px 22px 70px}
+h1{font-size:25px;font-weight:800;letter-spacing:-.5px}
+.sub{color:var(--muted);font-size:13.5px;margin-top:6px}
+h2{font-size:17px;font-weight:800;margin:38px 0 12px;padding-left:11px;border-left:4px solid var(--blue);letter-spacing:-.2px}
+h3{font-size:14.5px;font-weight:800;margin:22px 0 8px}
+p{margin-bottom:11px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:20px;box-shadow:0 1px 2px rgba(20,24,33,.04),0 8px 22px -14px rgba(20,24,33,.2)}
+.lead{font-size:15.5px;line-height:1.9}
+.lead b{color:var(--blue)}
+ol,ul{margin:0 0 12px 21px}
+li{margin-bottom:5px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0}
+th{background:var(--panel2);text-align:left;padding:8px 10px;font-weight:700;border-bottom:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+td{padding:8px 10px;border-bottom:1px solid var(--line2);vertical-align:top}
+tr.pick td{background:#f3f7ff}
+tr.pick td:first-child{box-shadow:inset 3px 0 0 var(--blue)}
+.mono{font-family:var(--mono);font-weight:700}
+.tno{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:6px;font-weight:800;font-size:12px;color:#fff}
+.key{background:var(--gold-l);border:1px solid #eddfb5;border-radius:11px;padding:15px 18px;margin:14px 0}
+.key b{color:var(--gold)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.box{background:var(--panel2);border:1px solid var(--line2);border-radius:11px;padding:15px 17px}
+.box h4{font-size:13.5px;font-weight:800;margin-bottom:7px}
+.box p{font-size:12.8px;color:var(--muted);margin:0;line-height:1.7}
+.foot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--dim);line-height:1.8}
+.win{color:var(--green);font-weight:700}
+.lose{color:var(--red);font-weight:700}
+@media(max-width:700px){.two{grid-template-columns:1fr}}
+@media print{body{background:#fff}.card{box-shadow:none}h2{page-break-after:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>首发五人对决 · 玩法说明书</h1>
+  <div class="sub">一个给 NBA 官方 APP 做增长的组队对战小游戏 ｜ 手机活动页形态 ｜ 分档来自外部评级表，身价对应真实 CBA 薪资结构</div>
+
+  <div class="card" style="margin-top:22px">
+    <p class="lead" style="margin:0">
+      用工资帽组建你的首发五人，挑一支<b>真实球队</b>（或者朋友的阵容）打一场。大模型把两边各自当成<b>一支球队</b>，
+      判断哪一套更可能赢，并给出<b>为什么</b>。
+    </p>
+    <ol style="margin:14px 0 0 21px">
+      <li><b>组队</b> —— 11 档定价 + 100% 工资帽，五个位置各选一人</li>
+      <li><b>选对手</b> —— 30 支真实球队 / 朋友的挑战码 / 自己手搓一队</li>
+      <li><b>看分析</b> —— 谁更可能赢 + 四步分析过程 + 关键对位</li>
+    </ol>
+  </div>
+
+  <h2>为什么做成手机活动页</h2>
+  <p>这个玩法的传播路径是「一个人组好队 → 分享给别人 → 别人也想组一队」，所以它天然是<b>一个可以被扫码打开的活动页</b>，不是一个应用。</p>
+  <div class="two">
+    <div class="box"><h4>单列竖屏</h4><p>所有内容一列到底，五个人 + 挑对手 + 结果，一屏看一屏的事。没有需要横向比较的表格，不需要缩放。</p></div>
+    <div class="box"><h4>点位置槽选人</h4><p>五个位置槽直接就是入口。点一下弹出底部抽屉，搜索/位置/档位/球队四种筛选都在抽屉里，主页面保持干净。</p></div>
+  </div>
+  <p style="margin-top:12px">底部固定一条状态栏：<b>工资帽和「组没组满」始终可见</b>，随时能点「开始分析」。这是移动端最省注意力的一种排布。</p>
+
+  <h2>怎么防止"无脑选最强五人"</h2>
+  <p>三条路都想过，最后选了第三条。</p>
+  <table>
+    <tr><th style="width:22%">方案</th><th style="width:32%">怎么运作</th><th>为什么没选</th></tr>
+    <tr><td>真实薪资工资帽</td><td>直接用球员真实年薪，按本赛季工资帽封顶</td><td>新秀合同超值、伤病特例、买断老将，漏洞一大堆；数值你也改不动，赛季一变就乱</td></tr>
+    <tr><td>名额限制</td><td>每队最多 1 个超巨、2 个全明星，其余只能选低档</td><td>规则最直白，但组队空间太死，玩两把就知道最优解，没有讨论空间</td></tr>
+    <tr class="pick"><td><b>分档定价 + 工资帽</b></td><td>沿用现成的《季前球员评级分档》：<b>档位 = 球员评分的整数部分</b>（7.9 分 → 7 档，11.4 分 → 11 档），每档身价 = 现实中这个级别的球星占工资帽的比例</td><td>数值可控、可解释、能一句话讲明白；而且和真实 NBA 的建队逻辑完全对得上</td></tr>
+  </table>
+
+  <div class="key">
+    <b>规则一：档位永远不会高于球员评分</b><br>
+    档位直接取评分的整数部分 —— 评级 11.4 分 → 11 档，评级 7.9 分 → 7 档，评级 6.1 分 → 6 档。<br>
+    好处是玩家扫一眼就知道谁比谁强，不会出现"6.5 分的人挂着 7 档"这种别扭事。分数一更新，档位自动跟着走，不需要维护第二套阈值。
+  </div>
+
+  <div class="key">
+    <b>规则二：每一档的身价，就是现实中这个级别的球星占工资帽的比例</b><br>
+    顶薪三档 35% / 33% / 28%，往下依次是全明星级别的 24%、优质首发 20%、……、全额中产 10%、迷你中产 7%、双年特例 4%、老将底薪 2%。<br>
+    <span style="color:var(--muted);font-size:12.8px">（11 档恰好 35% 这个数字是关键，会在下面第二节解释。）</span>
+  </div>
+
+  <h3>11 档身价表 · 每一档都对应真实薪资里的一个位置</h3>
+  <table>
+    <tr><th style="text-align:center">档位</th><th style="width:15%">分数区间</th><th style="width:13%">占工资帽</th><th style="width:20%">真实薪资（1.65 亿帽）</th><th>对应 CBA 里的什么</th></tr>
+    <tr><td style="text-align:center"><span class="tno" style="background:#b8860b">11</span> MVP 领跑者</td><td class="mono">11.0 以上</td><td class="mono">35%</td><td class="mono">≈ 5775 万</td><td>十年以上球龄的顶薪上限</td></tr>
+    <tr><td style="text-align:center"><span class="tno" style="background:#6d4bd6">10</span> MVP 候选人</td><td class="mono">10.0 – 10.9</td><td class="mono">33%</td><td class="mono">≈ 5445 万</td><td>顶薪 —— MVP 候选级别</td></tr>
+    <tr><td style="text-align:center"><span class="tno" style="background:#1d428a">9</span> 最佳阵容候选</td><td class="mono">9.0 – 9.9</td><td class="mono">28%</td><td class="mono">≈ 4620 万</td><td>顶薪 —— 最佳阵容级别</td></tr>
+    <tr><td style="text-align:center"><span class="tno" style="background:#1d428a">8</span> 全明星候选</td><td class="mono">8.0 – 8.9</td><td class="mono">24%</td><td class="mono">≈ 3960 万</td><td>次顶薪 —— 全明星级别</td></tr>
+    <tr><td style="text-align:center"><span class="tno" style="background:#1f7a4d">7</span> 高配首发</td><td class="mono">7.0 – 7.9</td><td class="mono">20%</td><td class="mono">≈ 3300 万</td><td>优质首发的市场价</td></tr>
+    <tr><td style="text-align:center"><span class="tno" style="background:#1f7a4d">6</span> 可靠首发</td><td class="mono">6.0 – 6.9</td><td class="mono">16%</td><td class="mono">≈ 2640 万</td><td>稳定首发的市场价</td></tr>
+    <tr><td style="text-align:center"><span class="tno" style="background:#1f7a4d">5</span> 低配首发</td><td class="mono">5.0 – 5.9</td><td class="mono">13%</td><td class="mono">≈ 2145 万</td><td>合格首发的市场价</td></tr>
+    <tr><td style="text-align:center"><span class="tno" style="background:#6b7280">4</span> 优质替补</td><td class="mono">4.0 – 4.9</td><td class="mono">10%</td><td class="mono">≈ 1650 万</td><td>全额中产条款</td></tr>
+    <tr><td style="text-align:center"><span class="tno" style="background:#6b7280">3</span> 普通轮换</td><td class="mono">3.0 – 3.9</td><td class="mono">7%</td><td class="mono">≈ 1155 万</td><td>迷你中产 / 空间中产</td></tr>
+    <tr><td style="text-align:center"><span class="tno" style="background:#6b7280">2</span> 板凳末端</td><td class="mono">2.0 – 2.9</td><td class="mono">4%</td><td class="mono">≈ 660 万</td><td>双年特例</td></tr>
+    <tr><td style="text-align:center"><span class="tno" style="background:#9aa3b0">1</span> 不该上场</td><td class="mono">1.0 – 1.9</td><td class="mono">2%</td><td class="mono">≈ 330 万</td><td>老将底薪</td></tr>
+  </table>
+  <p style="font-size:12.5px;color:var(--muted)">当前池子 248 人。各档人数：4 / 1 / 10 / 8 / 24 / 33 / 50 / 63 / 37 / 11 / 7。
+  <b>10 档只有字母哥一个人</b> —— 这不是 bug，是评级表本身的分布：11 分以上有 4 个人，然后直接掉到 9.9，10 分那段正好只有他。</p>
+
+  <div class="key">
+    <b>为什么 35% 这个数字是关键</b><br>
+    两个顶薪 = 70%，正好还能签三个全额中产（10% × 3 = 30%），合计 <b>100%</b> —— 这就是真实 NBA 里最经典的那套建队方式：<b>两个顶薪 + 三个中产</b>。<br>
+    而 35% × 3 = <b>105%</b>，直接超帽 —— 三个顶薪在工资帽下是签不出来的，现实里也一样。<br>
+    <b>玩家不需要学任何新规则，用 NBA 自己的常识就能组队。</b>
+  </div>
+
+  <h3>30 支真实球队也是难度分级</h3>
+  <p>30 支真实球队的首发不受工资帽约束 —— 这是它们的天然优势。平均吃掉 <b>80%</b> 工资帽，其中 76 人 112%、雷霆 108%、骑士 105%、尼克斯 105% 这四支是"硬仗"。
+  组队界面上会直接把对手的工资帽占比显示出来，挑之前心里有数。</p>
+
+  <h2>谁来判断胜负：引擎给角度，模型做判断</h2>
+  <p><b>这是这个玩法最核心的一次设计调整。</b>最初是"引擎算数字、模型只写文案"，后来发现这个分工是错的 —— 因为引擎其实不懂球。</p>
+
+  <h3>引擎的问题：一套固定规则覆盖不了真实世界</h3>
+  <p>引擎给每个球员算"球权需求"和"无球价值"，再按角色分配权重。听起来合理，但实测下来错得挺明显：</p>
+  <table>
+    <tr><th style="width:22%">球员</th><th style="width:18%">引擎原值</th><th>问题</th></tr>
+    <tr><td><b>库里</b></td><td class="mono">64</td><td>他有<b>「引力」标签</b>（全联盟只有他一个人有），代表历史级的无球牵制力，但引擎的公式里<b>根本没用上这个标签</b></td></tr>
+    <tr><td><b>霍勒迪</b></td><td class="mono">49</td><td>低于引擎的"脏活合格线"，会被判成<b>"脏活没人做"</b> —— 而他恰恰是联盟里最好的防守工兵之一</td></tr>
+    <tr><td><b>丹尼尔斯</b></td><td class="mono">46</td><td>抢断王，同样被判"脏活不行"</td></tr>
+  </table>
+  <p style="margin-top:10px">更能说明问题的是：<b>引擎的"无球价值"排行榜前 12 名全是护框型中锋</b>，外线防守型球员被系统性低估。</p>
+  <p><b>根子在于：球员的价值不是一个分数能概括的。</b>无球牵制力、防守威慑、掩护质量、卡位、换防弹性 ——
+  这些东西有的根本不在数据里，有的取决于身边的队友。一套写死的权重表永远补不全。</p>
+
+  <h3>最后把规则整条删掉了</h3>
+  <p>修完上面那些还不够。界面上当时还有两条<b>用规则硬套出来的判断</b>，实测是错的，已经全部删掉：</p>
+  <table>
+    <tr><th style="width:42%">被删掉的规则</th><th>为什么错</th></tr>
+    <tr><td>"有 3 个场均 20+ 的球员 → 球权不够分"</td>
+        <td><b>得分高不等于要球。</b>库里场均 26.6 分，但引擎算出来他的"球权需求"只有 40 —— 因为他大部分出手是无球跑出来的。
+            真正会挤在一起的是球权需求 78 以上那类人（东契奇 93、SGA 100）。<b>要看类型，不能数人头。</b></td></tr>
+    <tr><td>"五外拉开 → 但篮下空得慌"</td>
+        <td>把"护框数值"和"篮下有没有威胁"混成了一件事。有约基奇的阵容既能拉开空间、又能低位一打一，
+            <b>这是最理想的组合，不是缺陷</b>。</td></tr>
+    <tr><td>界面上显示"化学反应 XX/100"和扣分条目</td>
+        <td>看起来很权威，底层其实就是几条写死的阈值。<b>已经整条删掉</b> —— 现在这个面板只做中性描述
+            （这套阵容长什么样、有几个人能投三分、球权会先到谁手上），不判好坏、不打分。</td></tr>
+  </table>
+
+  <h3>调整后的分工</h3>
+  <div class="two">
+    <div class="box"><h4>引擎 → 只提供参考角度</h4>
+      <p>九个观察维度的数值（持球硬解 / 空间拉开 / 内线终结 / 护框 / 外线防守 / 篮板 / 组织串联 / 转换节奏 / 健康续航）、
+         球权需求排序。<br>
+         <b>明确标注「只是提示可以看哪些角度，不是评分，也不是结论」。</b><br>
+         另外提供客观事实：2025-26 的真实场均数据和命中率。</p></div>
+    <div class="box"><h4>大模型 → 判断胜负并讲清理由</h4>
+      <p>看球员的<b>类型和搭配</b>，判断哪一套更可能赢，给出四步分析过程。<br>
+         提示词里明确告诉它：引擎的数字会被低估，<b>如果你从球员类型上看出了不同的东西，以你的判断为准</b>。</p></div>
+  </div>
+
+  <div class="box" style="margin-top:14px">
+    <h4>给模型的判断原则（写进提示词）</h4>
+    <p>1. <b>不要数人头，要看类型</b>：几个场均 20+ 的人放在一起不一定是坏事，取决于他们能不能打无球。<br>
+       2. <b>空间拉得开是好事</b>，而且队里可能同时有低位威胁点 —— 那是最理想的组合。<br>
+       3. <b>有些价值不在数据里</b>：无球牵制力、防守威慑、掩护质量、卡位、换防弹性。<br>
+       4. <b>角色球员的脏活水平不统一</b>：有的比数据体现的更好，有的反而更差，不要一刀切。<br>
+       5. <b>同一个球员在不同队友身边价值不一样</b>：身边有传球手，无球型球员的价值被放大。</p>
+  </div>
+
+  <h2>分析怎么做的：四步</h2>
+  <p>如果只丢两套阵容让它自己判断，它会退化成"谁评分高谁赢"，或者写一堆正确的废话。
+  所以提示词里规定了它<b>必须按顺序走完四步</b>，每一步都有明确要回答的问题，每步约 100 字：</p>
+  <table>
+    <tr><th style="width:22%">步骤</th><th>要回答的问题</th></tr>
+    <tr><td><b>① 球权与打法</b></td><td>这套阵容摆上场会怎么打？球最终交到谁手上？谁是第二、第三选择？有没有人的价值因为摸不到球而被浪费？</td></tr>
+    <tr><td><b>② 对位</b></td><td>两边分别谁去防谁？哪一组是错位？谁会被反复针对？</td></tr>
+    <tr><td><b>③ 胜负点</b></td><td>各自的强项能不能打到对方的软肋？局面会从哪个环节开始倾斜？</td></tr>
+    <tr><td><b>④ 调整</b></td><td>落后的一方会怎么改 —— 换防、包夹、提速，还是把球交给另一个人？改完之后管用吗？</td></tr>
+  </table>
+  <p style="font-size:12.8px;color:var(--muted);margin-top:10px">
+  第四步是特意加的：<b>逼它站在教练视角想"怎么扳回来"</b>，而不是只做一次静态比较。
+  这也是让分析有"含金量"的关键 —— 前一步说的问题，后一步要给出应对，前后呼应。</p>
+  <p>旁边再配一组<b>关键对位</b>（3 组），把分析落到具体的人身上：谁防谁、谁吃亏、为什么。</p>
+
+  <h2>为什么不给比分</h2>
+  <div class="card">
+    <p style="margin-bottom:0"><b>因为一场真实比赛还有替补轮换，而这里只比首发五人。</b><br>
+    给出"112 比 108"会给人一种精确的错觉，但那个数字既没有依据，也解释不了什么 —— 玩家记住的只有输赢，
+    两分钟后就忘了。<br>
+    把力气全部花在"<b>为什么</b>"上，反而是这个玩法真正有记忆点的部分。所以结果页只有：
+    <b>谁更可能赢 + 一句话结论 + 四步分析 + 关键对位</b>。</p>
+  </div>
+
+  <h2>结果页怎么呈现</h2>
+  <p>原则是<b>结论先行、分析有料、细节收起</b>：</p>
+  <div class="two">
+    <div class="box"><h4>第一眼看到的</h4>
+      <p>① <b>谁更可能赢</b>（大字）<br>
+         ② <b>一句话结论</b>（16 字以内）<br>
+         ③ 两套阵容的<b>打法原型</b>各一个标签<br>
+         ④ <b>结论段</b>（120–160 字）<br>
+         ⑤ <b>四步分析过程</b>（每步约 100 字，编号卡片）<br>
+         ⑥ <b>三组关键对位</b></p></div>
+    <div class="box"><h4>想看再点开（默认收起）</h4>
+      <p><b>九维参考对照条</b> —— 并排显示两套阵容在九个维度上的数值。<br>
+         下面附一句话说清它是什么：<b>用固定公式从数据里算出来的粗略估计，只是提示可以看哪些角度，不是评分、也不是结论</b>。</p></div>
+  </div>
+  <p style="margin-top:12px">整个结果是<b>一屏半</b>的长度：结论、分析、对位各占一块，没有需要横向滚动的表格。</p>
+
+  <h2>大模型接入（已经配好一个免费的）</h2>
+  <p><b>原型里内置了一个免费的智谱 Key，双击打开直接就能用，不需要任何配置。</b>下面这些结论都是实测出来的。</p>
+  <table>
+    <tr><th style="width:26%">模型</th><th style="width:13%">费用</th><th style="width:11%">网页直连</th><th>实测结果</th></tr>
+    <tr><td><b>智谱 GLM-4-Flash</b></td><td>免费</td><td>✅</td><td><b>通了。</b>多轮调用都能正常返回，输出质量可用。<b>这是默认模型</b></td></tr>
+    <tr><td>智谱 GLM-4.7-Flash</td><td>免费</td><td>✅</td><td><b>限流严重。</b>官方也标着免费，但同一个 Key 调它基本每次都返回「已达到速率限制」（错误码 1302）</td></tr>
+    <tr><td>智谱付费系列</td><td>付费</td><td>✅</td><td>返回「余额不足」（错误码 1113）—— 这个账号没有充值</td></tr>
+    <tr><td>硅基流动 / 本地 Ollama</td><td>免费</td><td>✅</td><td>9B 以下小模型永久免费 / 完全离线，需要另外配置</td></tr>
+    <tr><td>火山豆包 / 混元 / 星火</td><td>有免费额度</td><td>❌</td><td><b>接口不允许网页直接调用</b>，会被浏览器拦掉，报错长得像「网络不好」，跟 Key 无关</td></tr>
+  </table>
+
+  <div class="two" style="margin-top:14px">
+    <div class="box"><h4>「禁止用付费模型」怎么落实</h4>
+      <p>不靠自觉，靠代码拦：只有免费名单里的模型能调，名单外的会在<b>发请求之前</b>就被拦下 ——
+         请求根本出不去，所以不可能产生费用。开关摆在界面上，默认开启。</p></div>
+    <div class="box"><h4>一个反直觉的发现</h4>
+      <p>智谱的「余额不足」（1113）和「达到速率限制」（1302）<b>都返回 HTTP 429</b>。
+         只看状态码会把"没钱了"误判成"被限流"，让人白等。<b>必须读返回体里的错误码。</b></p></div>
+  </div>
+
+  <div class="box" style="margin-top:14px">
+    <h4>免费模型最大的坑：JSON 格式不稳</h4>
+    <p>实测中免费模型有一部分输出<b>不是合法 JSON</b>。最典型的一种是：在中文语境里它会把结构位置的标点顺手打成全角 ——
+    键值之间写成 <span class="mono">”，“</span> 而不是 <span class="mono">","</span>。
+    还有一种是<b>把冒号写进引号里</b>：<span class="mono">"d:"内容</span>，正确写法是 <span class="mono">"d":"内容"</span>。</p>
+    <p style="margin-top:8px"><b>处理方式是五层，越往后越少见：</b>
+    ① 严格解析 → ② <b>结构位标点还原</b>（把全角标点换回半角，字符串内部的中文标点不动）→
+    ③ 处理字符串里的裸换行 → ④ 处理输出被截断 → ⑤ 还不行，把坏文本发回模型让它自己修一遍 → 最终仍失败才提示重试。</p>
+    <p style="margin-top:8px">这套解析层单独做过单测：<b>12 个用例全过</b>，其中包括一个故意不是 JSON 的负样本（被正确拒绝）。</p>
+  </div>
+
+  <h2>增长闭环</h2>
+  <table>
+    <tr><th style="width:20%">环节</th><th>机制</th><th style="width:26%">为什么能带来增长</th></tr>
+    <tr><td><b>进入</b></td><td>扫码 / 站内入口 / 朋友分享的挑战链接</td><td>一个链接能直接落到「挑对手」这一步，不用注册、不用下载</td></tr>
+    <tr><td><b>组队</b></td><td>工资帽逼出取舍：顶薪贵、深度也贵</td><td>组队本身就是内容 —— 每个人都会觉得自己的阵容能赢</td></tr>
+    <tr><td><b>验证</b></td><td>分析结果 + 四步推演</td><td>有观点、能引发争论。「他凭什么说我这套不行」</td></tr>
+    <tr><td><b>外传</b></td><td>挑战码 / 分享链接</td><td>不服就发给朋友打一场，是最自然的传播动机</td></tr>
+    <tr><td><b>回访</b></td><td>每天换一个限定工资帽 / 限定档位</td><td>给一个"今天必须来一次"的理由</td></tr>
+  </table>
+
+  <h3>三个可以直接加到官方 APP 里的钩子</h3>
+  <ol>
+    <li><b>每日限定工资帽</b> —— 今天只有 80%，或者今天禁止选 11 档。每天一个新题面，逼出不同的解法。</li>
+    <li><b>球队羁绊</b> —— 同队三人以上给加成，鼓励玩家去挖冷门球队的阵容，而不是只盯球星。</li>
+    <li><b>赛季联动</b> —— 真实比赛日当天，双方的首发自动成为对战题面，看完球顺手打一局。</li>
+  </ol>
+
+  <h2>参数表（这几项都能调）</h2>
+  <table>
+    <tr><th style="width:26%">参数</th><th style="width:26%">当前值</th><th>说明</th></tr>
+    <tr><td>工资帽</td><td class="mono">100%</td><td>改它等于改"能买几个球星"。降到 80% 会明显变难，逼玩家做更多取舍</td></tr>
+    <tr><td>档位价格</td><td class="mono">35 / 33 / 28 / 24 / 20 / 16 / 13 / 10 / 7 / 4 / 2</td><td>每一档占工资帽的百分比。改动会直接影响手感，改前先想清楚要鼓励什么打法</td></tr>
+    <tr><td>档位分数线</td><td class="mono">取评分的整数部分</td><td>和价格是两套东西：分数决定球员在哪一档，价格决定这一档值多少。要调某个球员，动评级表；要调手感，动价格表</td></tr>
+    <tr><td>分析步数</td><td class="mono">固定 4 步</td><td>球权与打法 / 对位 / 胜负点 / 调整。每步约 100 字</td></tr>
+    <tr><td>关键对位条数</td><td class="mono">3 组</td><td>要求点名到人，避免泛泛而谈</td></tr>
+    <tr><td>大模型</td><td class="mono">可插拔 · 9 家预置</td><td>默认智谱 GLM-4-Flash（免费）。弹窗里点一下就能换，Key 只存在本地浏览器</td></tr>
+  </table>
+
+  <h3>球员库怎么维护</h3>
+  <p>248 名球员的数据是<b>脚本生成</b>的，不是手写的。要更新名单或数据，改数据源后重跑生成脚本即可。
+  另外：<b>不要手动改 HTML 里的数据段</b> —— 位置校正表和单位换算都在生成脚本里，手改必出问题。</p>
+
+  <h2>落地建议</h2>
+  <ul>
+    <li><b>大模型调用要挪到服务端</b>。现在前端直连只适合做 Demo —— Key 会落在客户端，任何人都能扒出来。</li>
+    <li><b>成本</b>：一局一次请求，提示词约 3700 字。验证阶段直接用免费模型就能跑通全流程，<b>零成本验证玩法</b>；等留存数据出来了再换付费模型提升文案质量。</li>
+    <li><b>跨域限制</b>：网页直连只对部分服务商有效（见上面的实测表）。做成 App 内嵌页或小程序之后这个问题会自动消失 —— 请求走服务端或原生层，不受浏览器同源策略约束。</li>
+    <li><b>内置 Key 的处置</b>：为了方便试玩，原型里内置了一个免费 Key（文件里搜 <span class="mono">BUILTIN_KEY</span> 就能找到）。
+        <b>要对外分享、投屏、或发给同事之前，先把那一行清空</b>；正式版必须走服务端代持。</li>
+    <li><b>合规</b>：球员姓名、肖像的使用需按联盟规则授权。建议只出文字和号码，不放真人头像，风险最低。</li>
+    <li><b>下一步可以做二维码</b>：把页面部署到线上，生成一个带活动参数的二维码，就能直接投到物料上。</li>
+  </ul>
+
+  <div class="foot">
+    球员名单为 2026-27 赛季开季预测阵容，数值参考 2025-26 常规赛数据。<br>
+    档位与评分来自外部评级表；薪资结构参考真实 CBA 规则。<br>
+    本工具为增长玩法原型，与 NBA 官方无关。
+  </div>
+</div>
+</body>
+</html>
